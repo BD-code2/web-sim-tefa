@@ -1,0 +1,219 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Sidebar bersama untuk seluruh role; lebar konten mengikuti lebar sidebar. */
+@layer components {
+    .sim-shell {
+        --sim-sidebar-width: 18rem;
+    }
+    .sim-sidebar {
+        display: grid;
+        grid-template-rows: auto minmax(0, 1fr) auto;
+        width: var(--sim-sidebar-width);
+        max-width: 100vw;
+        height: 100vh;
+        height: 100dvh;
+        overflow: hidden;
+    }
+    .sim-sidebar-nav,
+    .sim-sidebar-footer {
+        min-width: 0;
+        min-height: 0;
+        padding: 1rem;
+        overflow-x: hidden;
+        overflow-y: auto;
+        /* Ruang scrollbar tetap sama agar menu dan logout selalu sejajar. */
+        scrollbar-gutter: stable;
+        scrollbar-width: thin;
+        scrollbar-color: #93c5fd transparent;
+        overscroll-behavior-y: contain;
+    }
+    .sim-sidebar-nav > * + * {
+        margin-top: .375rem;
+    }
+    .sim-sidebar-item {
+        @apply flex w-full shrink-0 items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium transition-colors;
+        min-height: 3rem;
+        line-height: 1.5rem;
+    }
+    .sim-sidebar-item svg {
+        flex-shrink: 0;
+    }
+    .sim-main {
+        min-width: 0;
+    }
+    @screen lg {
+        .sim-main {
+            padding-left: var(--sim-sidebar-width);
+        }
+    }
+}
+
+/* Gaya hanya untuk isi halaman administrasi. */
+@layer components {
+    .sim-page {
+        @apply space-y-6 text-sm leading-6;
+    }
+    .page-toolbar {
+        @apply flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between;
+    }
+    .page-panel {
+        @apply overflow-hidden rounded-2xl border border-slate-200 bg-white;
+    }
+    .page-panel-heading {
+        @apply flex flex-col gap-3 border-b border-slate-200 px-5 py-5 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:px-6;
+    }
+    .page-title {
+        @apply text-base font-semibold leading-6 text-slate-900;
+    }
+    .page-description {
+        @apply mt-1 text-base leading-7 text-slate-500;
+    }
+    .page-button {
+        @apply inline-flex min-h-[42px] shrink-0 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold leading-5 text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-100;
+    }
+    .page-button-primary {
+        @apply border-blue-700 bg-blue-700 text-white hover:border-blue-800 hover:bg-blue-800;
+    }
+    .page-button-success {
+        @apply border-emerald-700 bg-emerald-700 text-white hover:border-emerald-800 hover:bg-emerald-800;
+    }
+    .page-button-danger {
+        @apply border-rose-200 bg-white text-rose-700 hover:border-rose-300 hover:bg-rose-50;
+    }
+    .page-button-small {
+        @apply min-h-[36px] px-3 py-1.5 text-xs;
+    }
+    .ui-action {
+        @apply inline-flex items-center justify-center gap-2;
+    }
+    .ui-action-icon {
+        @apply h-10 min-h-[40px] w-10 min-w-[40px] shrink-0 rounded-lg border p-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2;
+    }
+    .ui-action-neutral { @apply border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-100; }
+    .ui-action-info { @apply border-blue-200 bg-blue-50 text-blue-700 hover:border-blue-300 hover:bg-blue-100; }
+    .ui-action-success { @apply border-emerald-200 bg-emerald-50 text-emerald-700 hover:border-emerald-300 hover:bg-emerald-100; }
+    .ui-action-warning { @apply border-amber-200 bg-amber-50 text-amber-700 hover:border-amber-300 hover:bg-amber-100; }
+    .ui-action-danger { @apply border-rose-200 bg-rose-50 text-rose-700 hover:border-rose-300 hover:bg-rose-100; }
+    .page-empty {
+        @apply px-5 py-10 text-center text-sm leading-6 text-slate-500;
+    }
+    .page-note {
+        @apply rounded-xl border border-blue-100 bg-blue-50/60 p-4 text-sm leading-6 text-blue-900;
+    }
+    .page-intro {
+        @apply text-base leading-7;
+    }
+    .page-field {
+        @apply space-y-2;
+    }
+    .page-filter {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+        gap: .75rem;
+        align-items: end;
+    }
+    .page-filter-actions {
+        grid-column: 1 / -1;
+    }
+    .page-choice {
+        @apply flex cursor-pointer items-start gap-3 rounded-lg border border-slate-200 p-3 text-sm leading-5 text-slate-700 transition-colors hover:border-blue-200 hover:bg-blue-50/40;
+    }
+    .page-choice:has(input:checked) {
+        @apply border-blue-300 bg-blue-50 text-blue-900;
+    }
+    .page-choice:has(input:disabled) {
+        @apply cursor-not-allowed border-slate-100 bg-slate-50 text-slate-500;
+    }
+    .page-badge {
+        @apply inline-flex items-center rounded-md border px-2.5 py-1 text-xs font-semibold leading-4;
+    }
+    .page-badge-neutral { @apply border-slate-200 bg-slate-50 text-slate-600; }
+    .page-badge-warning { @apply border-amber-200 bg-amber-50 text-amber-800; }
+    .page-badge-success { @apply border-emerald-200 bg-emerald-50 text-emerald-800; }
+    .page-badge-danger { @apply border-rose-200 bg-rose-50 text-rose-700; }
+    .page-badge-info { @apply border-blue-200 bg-blue-50 text-blue-800; }
+}
+
+/* Ukuran isi mengikuti ruang yang tersedia, termasuk saat zoom browser. */
+.sim-sidebar.sim-sidebar-open { transform: translateX(0); }
+.sim-content { overflow-wrap: anywhere; }
+.sim-page, .sim-page :is(.grid, .flex, .page-filter) > * { min-width: 0; }
+.sim-page :is(.page-toolbar, .page-panel-heading) > :first-child { flex: 1 1 16rem; }
+.sim-page :is(.page-toolbar, .page-panel-heading) > :only-child { flex-basis: auto; }
+.sim-page :is(.page-button, .ui-action) { max-width: 100%; }
+.sim-page .ui-action > svg { flex-shrink: 0; }
+.sim-page :is(.page-table-scroll, .overflow-x-auto) {
+    max-width: 100%;
+    overscroll-behavior-x: contain;
+}
+:where(.sim-page .overflow-x-auto) > table { min-width: 40rem; }
+.sim-page .page-filter > * { min-width: 0; }
+.sim-sidebar :is(a, button):focus-visible { outline: 2px solid white; outline-offset: -2px; }
+@media (max-width: 1023px) {
+    body.sim-menu-open { overflow: hidden; }
+}
+@media (max-width: 639px) {
+    .sim-page :is(.page-toolbar, .page-panel-heading) > :first-child { flex-basis: auto; }
+    .sim-page .page-toolbar > :is(a, button, form),
+    .sim-page .page-toolbar > form > button { width: 100%; }
+    .sim-page .page-form-footer > :is(a, button) { white-space: normal; }
+    .sim-page :is(.page-button, .ui-action-icon) { min-height: 44px; }
+    .sim-page .ui-action-icon { min-width: 44px; }
+    /* Teks isian tetap terbaca tanpa memicu zoom otomatis pada HP. */
+    .sim-content .sim-page form input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]),
+    .sim-content .sim-page form select, .sim-content .sim-page form textarea:not(.hidden),
+    .sim-auth input:not([type="checkbox"]):not([type="radio"]) { font-size: 1rem; }
+    .sim-auth form > .flex { flex-wrap: wrap; gap: .75rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .sim-sidebar { transition: none; }
+}
+
+/* Ukuran dan jarak konsisten, hanya pada halaman yang memakai sim-page. */
+.sim-page table { width: 100%; border-collapse: collapse; text-align: left; font-size: .875rem; line-height: 1.5; }
+.sim-page thead { background: #f8fafc; color: #475569; text-transform: none; letter-spacing: normal; }
+.sim-page th { padding: .875rem 1.25rem; font-size: .75rem; font-weight: 600; line-height: 1.5; border-bottom: 1px solid #e2e8f0; }
+.sim-page td { padding: 1rem 1.25rem; vertical-align: top; }
+.sim-page tbody tr + tr { border-top: 1px solid #f1f5f9; }
+.sim-page tbody tr:hover { background-color: #f8fafc; }
+.sim-page td[colspan] { padding: 1.5rem; }
+.sim-page .page-empty { padding: 2.5rem 1.25rem; }
+.sim-page label:not(.page-choice), .sim-page legend { color: #334155; font-size: .875rem; font-weight: 600; }
+.sim-page form input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]),
+.sim-page form select, .sim-page form textarea:not(.hidden) {
+    min-width: 0; max-width: 100%; min-height: 44px; border: 1px solid #cbd5e1;
+    border-radius: .5rem; padding: .65rem .875rem; background-color: #fff;
+    color: #0f172a; font-size: .875rem; line-height: 1.5;
+    box-shadow: none; transition: border-color .15s, box-shadow .15s;
+}
+.sim-page form select { padding-right: 2.5rem; }
+.sim-page form textarea { resize: vertical; }
+.sim-page form input[type="checkbox"], .sim-page form input[type="radio"] { width: 1rem; height: 1rem; flex-shrink: 0; margin-top: .125rem; color: #1d4ed8; border-color: #94a3b8; }
+.sim-page form input:focus, .sim-page form select:focus, .sim-page form textarea:focus { border-color: #2563eb; outline: none; box-shadow: 0 0 0 3px #dbeafe; }
+.sim-page form input[readonly], .sim-page form input:disabled, .sim-page form select:disabled { background-color: #f8fafc; color: #64748b; }
+.sim-page form input::placeholder, .sim-page form textarea::placeholder { color: #94a3b8; }
+.sim-page form fieldset { min-width: 0; }
+.sim-page :is(button, a):focus-visible { outline: 2px solid #2563eb; outline-offset: 3px; }
+.sim-page details > summary { cursor: pointer; }
+.sim-page .page-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: .5rem; }
+.sim-page .page-facts { display: grid; gap: 1.25rem 2rem; }
+.sim-page .page-facts dt { color: #64748b; font-size: .75rem; font-weight: 500; }
+.sim-page .page-facts dd { margin-top: .25rem; color: #0f172a; overflow-wrap: anywhere; }
+.sim-page .page-table-scroll { overflow-x: auto; overscroll-behavior-x: contain; }
+.sim-page .page-table-scroll table { min-width: 760px; }
+.sim-page .page-table-actions th:last-child, .sim-page .page-table-actions td:last-child { text-align: right; }
+.sim-page .page-table-actions td:last-child > .flex { justify-content: flex-end; }
+.sim-page .text-slate-400 { color: #64748b; }
+.sim-page [class~="text-[10px]"], .sim-page [class~="text-[11px]"] { font-size: .75rem; line-height: 1.5; }
+.sim-page form label > :is(input, select, textarea) { margin-top: .5rem; }
+.sim-page .page-form-footer { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: .75rem; border-top: 1px solid #e2e8f0; padding-top: 1.25rem; }
+.sim-page .page-section { padding: 1.5rem; }
+@media (max-width: 639px) {
+    .sim-page .page-section { padding: 1.25rem; }
+    .sim-page .page-form-footer > :is(a, button) { width: 100%; }
+    .sim-page .page-form-footer > form { width: 100%; }
+    .sim-page .page-form-footer > form > button { width: 100%; }
+}
+[x-cloak] { display: none !important; }
