@@ -49,7 +49,7 @@ class SuratDinasTest extends TestCase
 
     public function test_index_ditolak_untuk_role_lain(): void
     {
-        foreach (['kepala_sekolah', 'guru', 'humas', 'siswa'] as $role) {
+        foreach (['kepala_sekolah', 'bendahara_spp', 'humas', 'kepala_tu'] as $role) {
             $user = User::factory()->create(['role' => $role]);
 
             $this->actingAs($user)

@@ -254,7 +254,7 @@ class SuratKeluarCreateTest extends TestCase
 
     public function test_surat_keluar_ditolak_untuk_role_lain(): void
     {
-        foreach (['guru', 'humas', 'siswa'] as $role) {
+        foreach (['bendahara_spp', 'humas', 'kepala_tu'] as $role) {
             $user = User::factory()->create(['role' => $role]);
 
             $this->actingAs($user)

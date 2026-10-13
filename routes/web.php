@@ -20,7 +20,7 @@ Route::get('/', function () {
 })->name('home');
 
 // Authenticated Routes - Common for all roles
-Route::middleware(['auth', 'role:kepala_sekolah,kepala_tu,tu,humas,waka_kurikulum,waka_kesiswaan,waka_sarpras,waka_humas,pembina_osis,bendahara_bos,bendahara_spp,siswa'])->group(function () {
+Route::middleware(['auth', 'role:kepala_sekolah,kepala_tu,tu,humas,waka_kurikulum,waka_kesiswaan,waka_sarpras,waka_humas,pembina_osis,bendahara_bos,bendahara_spp'])->group(function () {
     // Beranda & Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 

@@ -34,7 +34,6 @@ class User extends Authenticatable
         'pembina_osis' => 'Pembina OSIS',
         'bendahara_bos' => 'Bendahara Sekolah/BOS',
         'bendahara_spp' => 'Bendahara SPP',
-        'siswa' => 'Siswa',
     ];
 
     /**
@@ -114,11 +113,6 @@ class User extends Authenticatable
         return $this->role === 'waka_kurikulum';
     }
 
-    public function isSiswa(): bool
-    {
-        return $this->role === 'siswa';
-    }
-
     public function hasRole(string|array $roles): bool
     {
         if (is_string($roles)) {
@@ -142,7 +136,6 @@ class User extends Authenticatable
             'pembina_osis' => 'Pembina OSIS',
             'bendahara_bos' => 'Bendahara Sekolah/BOS',
             'bendahara_spp' => 'Bendahara SPP',
-            'siswa' => 'Siswa',
             default => ucfirst($this->role ?? ''),
         };
     }

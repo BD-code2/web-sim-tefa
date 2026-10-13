@@ -18,9 +18,9 @@ One shot: `composer run setup` (install, .env, key, `migrate --force`, `npm inst
 `.env` uses `SESSION_DRIVER=database` and `QUEUE_CONNECTION=database` — the dev app needs a migrated SQLite file (tests override both to `array`/`sync`).
 
 Seeded logins (`php artisan db:seed`, idempotent `updateOrCreate`), password `password123`:
-`kepsek@`, `kepala.tu@`, `tu@`, `humas@`, `kurikulum@`, `wakakesiswaan@`, `wakasarpras@`, `wakahumas@`, `pembina.osis@`, `bendahara.bos@`, `bendahara.spp@` — all `@smkn4.com`; seeded password `password123`. No admin, guru, or siswa account is seeded. Legacy admin/guru users are disabled by migration while retaining historical references.
+`kepsek@`, `kepala.tu@`, `tu@`, `humas@`, `kurikulum@`, `wakakesiswaan@`, `wakasarpras@`, `wakahumas@`, `pembina.osis@`, `bendahara.bos@`, `bendahara.spp@` — all `@smkn4.com`; seeded password `password123`. No admin or guru account is seeded. Legacy admin/guru users are disabled by migration while retaining historical references.
 
-`/register` is open and creates an active user with the database default role `siswa`; no email verification is enforced on app routes.
+Public registration is disabled. TU manages user accounts; no email verification is enforced on app routes.
 
 ## Commands
 
@@ -40,13 +40,13 @@ Single test: `php artisan test --filter=<name>` (standard PHPUnit filtering).
 ## Testing
 
 - SQLite in-memory via `phpunit.xml` (`DB_DATABASE=:memory:`, `BCRYPT_ROUNDS=4`); `RefreshDatabase` per test.
-- Factory password is `password` (`UserFactory`), factory default role `siswa`. `password123` is seeder-only — tests logging in with it will fail.
+- Factory password is `password` (`UserFactory`), factory default role `tu`. `password123` is seeder-only — tests logging in with it will fail.
 - Run `php artisan test` for the current test count and status.
 - On Windows this PHP build prints `Module "mysqli" is already loaded` warnings to stderr; that is noise, not failure.
 
 ## RBAC (`role` middleware + `routes/web.php`)
 
-Roles: `kepala_sekolah`, `kepala_tu`, `tu`, `humas`, `waka_kurikulum`, `waka_kesiswaan`, `waka_sarpras`, `waka_humas`, `pembina_osis`, `bendahara_bos`, `bendahara_spp`, `siswa`.
+Roles: `kepala_sekolah`, `kepala_tu`, `tu`, `humas`, `waka_kurikulum`, `waka_kesiswaan`, `waka_sarpras`, `waka_humas`, `pembina_osis`, `bendahara_bos`, `bendahara_spp`.
 `role` alias is registered in `bootstrap/app.php` → `App\Http\Middleware\RoleMiddleware`. Inactive users are logged out before role checks. TU owns the former admin management capabilities; there are no active admin or guru accounts. The eight recipient roles from `public/preference/format table/format disposisi.jpeg` are seeded as active accounts.
 
 Access map (enforced by route groups — verify there before assuming):
@@ -58,7 +58,6 @@ Access map (enforced by route groups — verify there before assuming):
 - TU and Kepala Sekolah: surat keluar/dinas approvals and lembar disposisi, guarded by `manage-disposisi`.
 - TU: surat masuk/keluar, surat dinas, user management, data siswa, kerja sama, and certificates.
 - Kepala Sekolah and recipients can view surat masuk only when the letter is assigned through a disposisi.
-- `siswa`: dashboard, profile, notifikasi, agenda only.
 
 ## Approval flows
 

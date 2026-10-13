@@ -17,7 +17,7 @@ class DashboardController extends Controller
         $user = $request->user();
 
         $aksesSemuaSurat = $user->isTU() || $user->isKepalaSekolah();
-        $aksesDisposisi = ! $user->isSiswa();
+        $aksesDisposisi = true;
 
         $suratMasukQuery = SuratMasuk::query();
         if (! $aksesSemuaSurat) {

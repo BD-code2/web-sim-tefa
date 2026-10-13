@@ -19,7 +19,7 @@ class DashboardCardTest extends TestCase
         $tu = User::factory()->create(['role' => 'tu']);
         $kepsek = User::factory()->create(['role' => 'kepala_sekolah']);
         $penerima = User::factory()->create(['role' => 'waka_kurikulum']);
-        $siswa = User::factory()->create(['role' => 'siswa']);
+        $wakaSarpras = User::factory()->create(['role' => 'waka_sarpras']);
 
         $suratMasuk = SuratMasuk::create([
             'no_surat' => 'SM/DASHBOARD/001',
@@ -46,7 +46,7 @@ class DashboardCardTest extends TestCase
             'instruksi' => 'Tindak lanjuti.',
         ]);
 
-        foreach ([$tu, $kepsek, $penerima, $siswa] as $user) {
+        foreach ([$tu, $kepsek, $penerima, $wakaSarpras] as $user) {
             $this->actingAs($user)->get(route('dashboard'))
                 ->assertOk()
                 ->assertSee('Surat masuk')
@@ -59,7 +59,5 @@ class DashboardCardTest extends TestCase
             ->assertSee('1 tugas masih menunggu')
             ->assertSee('Tidak tersedia untuk role ini');
 
-        $this->actingAs($siswa)->get(route('dashboard'))
-            ->assertSee('Tidak tersedia untuk role ini');
     }
 }

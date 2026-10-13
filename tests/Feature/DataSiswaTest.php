@@ -49,7 +49,7 @@ class DataSiswaTest extends TestCase
             'agenda' => 'Kegiatan PKL',
         ]);
 
-        $this->actingAs($this->userWithRole('siswa'))
+        $this->actingAs($this->userWithRole('bendahara_spp'))
             ->get(route('data-siswa.periode.edit', $periode))
             ->assertForbidden();
     }

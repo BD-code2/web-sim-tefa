@@ -96,7 +96,7 @@ class DisposisiRecipientRolesTest extends TestCase
             'instruksi_tambahan' => 'TU tidak dapat menerbitkan disposisi.',
         ])->assertStatus(403);
 
-        $orangLuar = User::factory()->create(['role' => 'siswa']);
+        $orangLuar = User::factory()->create(['role' => 'kepala_tu']);
         $this->actingAs($orangLuar)->get(route('surat-masuk.show', $suratMasuk))->assertForbidden();
 
         $this->assertSame(1, Disposisi::count());

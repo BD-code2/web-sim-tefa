@@ -162,9 +162,7 @@ Akun berikut tersedia setelah `php artisan db:seed`. Sumber: [DatabaseSeeder](da
 | Pembina OSIS | `pembina_osis` | `pembina.osis@smkn4.com` | `password123` |
 | Bendahara Sekolah/BOS | `bendahara_bos` | `bendahara.bos@smkn4.com` | `password123` |
 | Bendahara SPP | `bendahara_spp` | `bendahara.spp@smkn4.com` | `password123` |
-| Siswa | `siswa` | Belum tersedia di seeder; ditentukan saat membuat akun | Ditentukan saat membuat akun |
-
-Untuk mencoba role siswa, daftar melalui `/register` atau buat akun melalui pengelolaan pengguna menggunakan akun TU. Registrasi publik menghasilkan pengguna aktif dengan role `siswa`. Tidak ada akun admin atau guru bawaan yang aktif.
+Tidak ada akun admin atau guru bawaan yang aktif. Akun pengguna dikelola oleh TU; registrasi publik dinonaktifkan.
 
 ## Hak akses pengguna
 
@@ -178,7 +176,6 @@ Semua role aktif dapat membuka dashboard, profil, dan notifikasi. Hak akses beri
 | Humas | Mengelola/menyetujui mitra, agenda industri, agenda PKL, siswa, dan sertifikat. Rute disposisi tersedia dengan pemeriksaan kepemilikan data. |
 | Waka Humas | Akses industri/PKL seperti Humas, serta menerima dan memproses disposisi. |
 | Waka Kurikulum, Waka Kesiswaan, Waka Sarpras, Pembina OSIS, Bendahara BOS, Bendahara SPP | Membaca surat yang didisposisikan kepada akunnya, mengunduh dokumen terkait, memberi tanggapan, memperbarui progres, dan melihat arsip terkait. |
-| Siswa | Dashboard, profil, dan notifikasi; belum memiliki akses langsung ke modul data siswa atau sertifikat. |
 
 Tujuan disposisi baru tersedia untuk delapan role: Waka Kurikulum, Waka Kesiswaan, Waka Sarpras, Waka Humas, Pembina OSIS, TU, Bendahara BOS, dan Bendahara SPP. `humas` dan `waka_humas` merupakan dua role berbeda.
 
@@ -194,7 +191,7 @@ Akun tidak aktif dikeluarkan dari sesi saat mengakses rute dengan middleware rol
 4. Fitur penghapusan akun pada profil memerlukan password saat ini.
 5. Gunakan **Logout** untuk mengakhiri sesi.
 
-Registrasi `/register` menghasilkan role siswa. Rute aplikasi saat ini tidak mewajibkan verifikasi email. Pemulihan password mengikuti konfigurasi mail; `.env.example` memakai `MAIL_MAILER=log`, sehingga pesan pengembangan dicatat ke log.
+Pembuatan akun dilakukan melalui pengelolaan pengguna oleh TU. Rute aplikasi saat ini tidak mewajibkan verifikasi email. Pemulihan password mengikuti konfigurasi mail; `.env.example` memakai `MAIL_MAILER=log`, sehingga pesan pengembangan dicatat ke log.
 
 ### 2. Dashboard
 
@@ -413,7 +410,7 @@ Surat keluar memakai akhiran terbesar pada prefix bulan/tahun terkait, termasuk 
 | URL | Fungsi | Akses utama |
 |---|---|---|
 | `/` | Halaman depan | Publik |
-| `/login`, `/register`, `/forgot-password` | Autentikasi | Tamu |
+| `/login`, `/forgot-password` | Autentikasi | Tamu |
 | `/dashboard`, `/profile`, `/notifikasi` | Fitur umum | Semua role aktif |
 | `/surat-masuk` | Pencatatan surat masuk | TU |
 | `/disposisi/antrian`, `/disposisi/arsip` | Antrean dan riwayat | Sesuai role dan kepemilikan |

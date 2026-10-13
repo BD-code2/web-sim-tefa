@@ -66,7 +66,7 @@
     </div>
 
     <!-- Tombol Verifikasi & Terbitkan (Humas / Kepsek / Admin) -->
-    @if(!auth()->user()->isSiswa())
+    @if(auth()->user()->hasRole(['tu', 'humas', 'waka_humas']))
     <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
             <h3 class="text-sm font-bold text-slate-800">Tahap Pengesahan Sertifikat</h3>
