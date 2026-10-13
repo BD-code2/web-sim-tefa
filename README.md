@@ -4,6 +4,22 @@ Sistem Informasi Manajemen Sekolah berbasis web untuk administrasi surat masuk, 
 
 Dokumentasi ini mengikuti implementasi rute, controller, model, dan seeder dalam proyek. Email dan password di bawah adalah akun bawaan seeder untuk mencoba aplikasi, bukan daftar akun pada server produksi.
 
+## Preview aplikasi
+
+### Halaman depan
+
+![Preview halaman depan 1](public/images/Landing%20page%201.png)
+
+![Preview halaman depan 2](public/images/Landing%20page%202.png)
+
+### Login
+
+![Preview halaman login](public/images/Login.png)
+
+### Dashboard TU
+
+![Preview dashboard TU](public/images/Dashboard%20TU.png)
+
 ## Daftar isi
 
 - [Fitur utama](#fitur-utama)
