@@ -23,10 +23,14 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
  *   Industri          -> industri
  *   Peran/Penghargaan -> peran
  *   Tanggal           -> tanggal
+ *   Tempat / Tgl. Lahir atau kolom Tempat Lahir + Tanggal Lahir -> tempat_tgl_lahir
  */
 class StudentImportParser
 {
     private const HEADER_KEYWORDS = [
+        'tempat_tgl_lahir' => ['tempat tanggal lahir', 'tempat tgl lahir', 'ttl'],
+        'tempat_lahir' => ['tempat lahir'],
+        'tanggal_lahir' => ['tanggal lahir', 'tgl lahir', 'tanggal lahir siswa'],
         'nisn' => ['nisn', 'nis'],
         'nama' => ['nama_lengkap', 'nama'],
         'kelas' => ['kelas', 'rombel', 'class'],
@@ -38,7 +42,7 @@ class StudentImportParser
     private const REQUIRED_FIELDS = ['nisn', 'nama', 'kelas', 'industri'];
 
     /**
-     * @return array<int, array{nisn: string, nama: string, kelas: string, industri: string, peran: string, tanggal: ?string}>
+     * @return array<int, array{nisn: string, nama: string, tempat_tgl_lahir: string, kelas: string, industri: string, peran: string, tanggal: ?string}>
      */
     public function parse(string $sourcePath, string $extension): array
     {
@@ -104,7 +108,14 @@ class StudentImportParser
                 continue;
             }
 
-            $label = mb_strtolower(trim($label));
+            $label = trim(preg_replace('/[\s_\/.,-]+/u', ' ', mb_strtolower(trim($label))));
+
+            // Header gabungan dapat ditulis "Tempat / Tgl. Lahir".
+            if (str_contains($label, 'tempat') && str_contains($label, 'lahir') && (str_contains($label, 'tanggal') || str_contains($label, 'tgl'))) {
+                $columns['tempat_tgl_lahir'] = $columnNumber - 1;
+
+                continue;
+            }
 
             foreach (self::HEADER_KEYWORDS as $field => $keywords) {
                 if (isset($columns[$field])) {
@@ -152,7 +163,7 @@ class StudentImportParser
 
     /**
      * @param  array<string, int>  $columns
-     * @return array{nisn: string, nama: string, kelas: string, industri: string, peran: string, tanggal: ?string}|null
+     * @return array{nisn: string, nama: string, tempat_tgl_lahir: string, kelas: string, industri: string, peran: string, tanggal: ?string}|null
      */
     private function readRow(Worksheet $sheet, int $rowNumber, array $columns): ?array
     {
@@ -173,6 +184,7 @@ class StudentImportParser
         return [
             'nisn' => $nisn,
             'nama' => $nama,
+            'tempat_tgl_lahir' => $this->birthDetails($raw),
             'kelas' => isset($raw['kelas']) ? $this->stringify($raw['kelas']) : '',
             'industri' => isset($raw['industri']) ? $this->stringify($raw['industri']) : '',
             'peran' => isset($raw['peran']) ? $this->stringify($raw['peran']) : '',
@@ -205,6 +217,24 @@ class StudentImportParser
         }
 
         return $value;
+    }
+
+    private function birthDetails(array $raw): string
+    {
+        $combined = $this->stringify($raw['tempat_tgl_lahir'] ?? null);
+        if ($combined !== '') {
+            return $combined;
+        }
+
+        $place = $this->stringify($raw['tempat_lahir'] ?? null);
+        $value = $this->stringify($raw['tanggal_lahir'] ?? null);
+        if (is_numeric($value) && (float) $value > 0 && (float) $value < 100000) {
+            $value = Date::excelToDateTimeObject((float) $value)->format('Y-m-d');
+        }
+        $date = $this->normalizeDate($value);
+        $formatted = $date ? Carbon::parse($date)->locale('id')->translatedFormat('d F Y') : $value;
+
+        return implode(' / ', array_filter([$place, $formatted], fn ($part) => $part !== ''));
     }
 
     private function stringify(mixed $value): string

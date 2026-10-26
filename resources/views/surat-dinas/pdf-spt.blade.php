@@ -9,8 +9,8 @@
         /* Kop Surat */
         .kop { width: 100%; border-bottom: 3px double #000; padding-bottom: 6px; margin-bottom: 16px; }
         .kop td { vertical-align: middle; }
-        .kop-logo { width: 70px; text-align: center; }
-        .kop-logo img { width: 56px; height: auto; }
+        .kop-logo { width: 112px; text-align: center; }
+        .kop-logo img { width: auto; height: 110px; max-width: 110px; }
         .kop-teks { text-align: center; }
         .kop-1, .kop-2 { font-size: 13pt; font-weight: bold; text-transform: uppercase; margin: 0; }
         .kop-3 { font-size: 15pt; font-weight: bold; text-transform: uppercase; margin: 1px 0; letter-spacing: 1px; }
@@ -46,7 +46,7 @@
         .penutup { margin-top: 16px; text-align: justify; }
         .ttd-table { width: 100%; margin-top: 34px; }
         .ttd-table td { vertical-align: top; }
-        .ttd { width: 50%; text-align: center; }
+        .ttd { width: 50%; text-align: left; }
         .ttd .nama { font-weight: bold; text-decoration: underline; margin-top: 58px; }
         .ttd .nip { margin-top: 2px; }
     </style>

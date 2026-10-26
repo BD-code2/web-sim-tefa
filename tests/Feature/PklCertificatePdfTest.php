@@ -5,7 +5,9 @@ namespace Tests\Feature;
 use App\Models\PeriodePkl;
 use App\Models\SertifikatSiswa;
 use App\Models\User;
+use App\Services\PklCertificateAssets;
 use App\Services\PklCertificatePdf;
+use Dompdf\Canvas;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -126,5 +128,29 @@ class PklCertificatePdfTest extends TestCase
         $this->actingAs($user)->get(route('data-siswa.pdf-kelas', [
             'kelas' => 'XII RPL 1', 'periode_pkl_id' => $periode->id,
         ]))->assertNotFound();
+    }
+
+    public function test_data_lahir_dicetak_dan_blok_tanda_tangan_sejajar(): void
+    {
+        $certificate = $this->certificate(['tempat_tgl_lahir' => 'Kijang / 08 Oktober 2007']);
+        $builder = app(PklCertificatePdf::class);
+        $document = $builder->create([$certificate]);
+        $canvas = \Mockery::mock(Canvas::class)->shouldIgnoreMissing();
+        $canvas->shouldReceive('get_width')->andReturn(702);
+        $canvas->shouldReceive('get_height')->andReturn(491);
+        $canvas->shouldReceive('get_text_width')->andReturnUsing(fn ($text, $font, $size) => strlen($text) * $size / 2);
+        $canvas->shouldReceive('get_font_height')->andReturn(14);
+        $positions = [];
+        $canvas->shouldReceive('text')->andReturnUsing(function ($x, $y, $text, $font, $size) use (&$positions) {
+            $positions[$text] = ['center' => $x + strlen($text) * $size / 4, 'y' => $y];
+        });
+        $draw = new \ReflectionMethod(PklCertificatePdf::class, 'draw');
+        $draw->invoke($builder, $canvas, $document->getDomPDF()->getFontMetrics(), $certificate, app(PklCertificateAssets::class)->prepare());
+
+        $this->assertArrayHasKey('Kijang / 08 Oktober 2007', $positions);
+        $this->assertEqualsWithDelta(351, $positions['Sertifikat']['center'], .01);
+        $this->assertEqualsWithDelta(177, $positions[config('pkl.certificate.principal_name')]['center'], .01);
+        $this->assertEqualsWithDelta(177, $positions['NIP '.config('pkl.certificate.principal_nip')]['center'], .01);
+        $this->assertEquals($positions[config('pkl.certificate.principal_name')]['y'], $positions['Drs. H. EDI BATARA, M.A.P.']['y']);
     }
 }

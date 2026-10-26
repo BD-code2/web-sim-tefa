@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DataSiswa;
 use App\Models\KerjaSamaIndustri;
 use App\Models\SertifikatSiswa;
 use App\Services\PklCertificatePdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SertifikatController extends Controller
 {
@@ -33,11 +35,37 @@ class SertifikatController extends Controller
         return view('sertifikat.index', compact('sertifikats'));
     }
 
-    public function show(SertifikatSiswa $sertifikat)
+    public function show(Request $request, SertifikatSiswa $sertifikat)
     {
         $sertifikat->load(['industri', 'penerbit']);
 
-        return view('sertifikat.show', compact('sertifikat'));
+        $daftarParams = $request->only(['kelas', 'search', 'page']);
+        $daftarUrl = $sertifikat->periode_pkl_id
+            ? route('data-siswa.agenda.show', ['periode' => $sertifikat->periode_pkl_id] + $daftarParams)
+            : route('sertifikat.index', $daftarParams);
+
+        return view('sertifikat.show', compact('sertifikat', 'daftarUrl', 'daftarParams'));
+    }
+
+    public function updateNilai(Request $request, SertifikatSiswa $sertifikat)
+    {
+        $validated = $request->validate([
+            'nilai' => ['required', 'numeric', 'min:0', 'max:100'],
+            'predikat' => ['required', 'string', 'max:50'],
+            'tempat_tgl_lahir' => ['sometimes', 'nullable', 'string', 'max:255'],
+        ]);
+
+        DB::transaction(function () use ($sertifikat, $validated) {
+            $sertifikat->update($validated);
+            if (array_key_exists('tempat_tgl_lahir', $validated) && $sertifikat->periode_pkl_id) {
+                DataSiswa::where('nisn', $sertifikat->nisn)
+                    ->where('periode_pkl_id', $sertifikat->periode_pkl_id)
+                    ->update(['tempat_tgl_lahir' => $validated['tempat_tgl_lahir']]);
+            }
+        });
+
+        return redirect()->route('sertifikat.show', ['sertifikat' => $sertifikat->id] + $request->only(['kelas', 'search', 'page']))
+            ->with('success', 'Data sertifikat berhasil disimpan. Data lahir dan predikat akan tampil pada sertifikat PDF.');
     }
 
     public function edit(SertifikatSiswa $sertifikat)

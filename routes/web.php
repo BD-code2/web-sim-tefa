@@ -144,6 +144,7 @@ Route::middleware(['auth', 'role:tu,humas,waka_humas'])->group(function () {
 Route::middleware(['auth', 'role:tu,humas,waka_humas'])->group(function () {
     Route::get('/sertifikat/{sertifikat}/pdf', [SertifikatController::class, 'cetakPdf'])->name('sertifikat.pdf');
     Route::patch('/sertifikat/{sertifikat}/status', [SertifikatController::class, 'updateStatus'])->name('sertifikat.status');
+    Route::patch('/sertifikat/{sertifikat}/nilai', [SertifikatController::class, 'updateNilai'])->name('sertifikat.nilai');
     Route::resource('sertifikat', SertifikatController::class)->except(['create', 'store']);
 });
 

@@ -203,6 +203,9 @@ class DataSiswaController extends Controller
             if ($siswa !== null) {
                 // Import ulang menyegarkan identitas tanpa mereset status sertifikat.
                 $siswa->nama = $row['nama'];
+                if ($row['tempat_tgl_lahir'] !== '') {
+                    $siswa->tempat_tgl_lahir = $row['tempat_tgl_lahir'];
+                }
                 $siswa->kelas = $row['kelas'] !== '' ? $row['kelas'] : $siswa->kelas;
                 if ($row['industri'] !== '') {
                     $siswa->industri = $row['industri'];
@@ -221,6 +224,11 @@ class DataSiswaController extends Controller
                 }
 
                 $siswa->save();
+                if ($row['tempat_tgl_lahir'] !== '') {
+                    SertifikatSiswa::where('nisn', $siswa->nisn)
+                        ->where('periode_pkl_id', $siswa->periode_pkl_id)
+                        ->update(['tempat_tgl_lahir' => $siswa->tempat_tgl_lahir]);
+                }
                 $updated++;
 
                 continue;
@@ -229,6 +237,7 @@ class DataSiswaController extends Controller
             DataSiswa::create([
                 'nisn' => $row['nisn'],
                 'nama' => $row['nama'],
+                'tempat_tgl_lahir' => $row['tempat_tgl_lahir'] ?: null,
                 'kelas' => $row['kelas'] !== '' ? $row['kelas'] : null,
                 'industri' => $row['industri'] !== '' ? $row['industri'] : null,
                 'periode_pkl_id' => $validated['periode_pkl_id'],
@@ -270,6 +279,7 @@ class DataSiswaController extends Controller
                 }
                 $certificate->fill([
                     'nama_siswa' => $siswa->nama,
+                    'tempat_tgl_lahir' => $siswa->tempat_tgl_lahir,
                     'program_keahlian' => $validated['program_keahlian'],
                     'kerja_sama_industri_id' => null,
                     'nama_industri_pkl' => $siswa->industri,
@@ -302,6 +312,7 @@ class DataSiswaController extends Controller
 
         $sertifikat->fill([
             'nama_siswa' => $dataSiswa->nama,
+            'tempat_tgl_lahir' => $dataSiswa->tempat_tgl_lahir,
             'program_keahlian' => $validated['program_keahlian'],
             'kerja_sama_industri_id' => null,
             'nama_industri_pkl' => $dataSiswa->industri,

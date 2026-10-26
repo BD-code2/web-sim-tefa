@@ -32,7 +32,7 @@
                     <li><span class="font-mono font-semibold text-blue-700">kelas</span> untuk mengelompokkan siswa</li>
                     <li><span class="font-mono font-semibold text-blue-700">industri</span> untuk menentukan tempat PKL siswa</li>
                 </ul>
-                <p class="mt-2 text-xs text-slate-500">Kolom kelas dan industri wajib tersedia untuk proses PKL. Impor ulang di agenda yang sama memperbarui data siswa.</p>
+                <p class="mt-2 text-xs text-slate-500">Kolom kelas dan industri wajib tersedia untuk proses PKL. Tambahkan kolom Tempat / Tanggal Lahir (gabungan), atau Tempat Lahir dan Tanggal Lahir (terpisah), agar data lahir tampil di sertifikat. Impor ulang di agenda yang sama memperbarui data siswa dan data lahir sertifikat yang sudah dibuat.</p>
             </div>
             <div class="page-form-footer">
                 <button type="submit" class="rounded-xl bg-blue-700 px-6 py-2.5 text-sm font-semibold text-white hover:bg-blue-800 ui-action"><x-ui.icon name="upload" /> Import Siswa</button>

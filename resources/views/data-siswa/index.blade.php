@@ -145,6 +145,7 @@
                         <th scope="col" class="py-3.5 px-4">Kelas</th>
                         <th scope="col" class="py-3.5 px-4">Program Keahlian PKL</th>
                         <th scope="col" class="py-3.5 px-4">Industri PKL (Excel)</th>
+                        <th scope="col" class="py-3.5 px-4 text-center">Nilai &amp; Predikat</th>
                         <th scope="col" class="py-3.5 px-4 text-center">Status PKL</th>
                         <th scope="col" class="py-3.5 px-4 text-center min-w-64">Aksi PKL per Siswa</th>
                     </tr>
@@ -158,6 +159,10 @@
                             @php($pkl = $pklByNisn->get($siswa->nisn))
                             <td class="py-3.5 px-4 font-medium text-slate-700">{{ $pkl?->program_keahlian ?? '-' }}</td>
                             <td class="py-3.5 px-4 font-medium text-slate-700">{{ $pkl?->nama_industri_pkl ?? $siswa->industri ?? $pkl?->industri?->nama_industri ?? '-' }}</td>
+                            <td class="py-3.5 px-4 text-center">
+                                <span class="font-bold text-slate-800">{{ $pkl?->nilai ?? '-' }}</span>
+                                <span class="text-xs text-slate-500 block">{{ $pkl?->predikat ?? 'Belum dinilai' }}</span>
+                            </td>
                             <td class="py-3.5 px-4 text-center">
                                 @if($pkl?->status === 'diterbitkan')
                                     <span class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-700">Sertifikat Terbit</span>
@@ -185,7 +190,7 @@
                                             <span class="text-xs text-rose-600">Isi industri siswa terlebih dahulu</span>
                                         @endif
                                     @else
-                                        <x-ui.action icon="eye" label="Detail PKL siswa" tone="info" href="{{ route('sertifikat.show', $pkl) }}" />
+                                        <x-ui.action icon="eye" label="Detail PKL siswa" tone="info" :href="route('sertifikat.show', ['sertifikat' => $pkl->id] + request()->only(['kelas', 'search', 'page']))" />
                                         @if($pkl->status === 'draft')
                                             <form method="POST" action="{{ route('data-siswa.selesaikan-siswa', $siswa) }}" onsubmit="return confirm('Tandai PKL {{ $siswa->nama }} selesai?')">
                                                 @csrf
@@ -211,7 +216,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="py-8 text-center text-slate-400">Belum ada data siswa. Gunakan tombol "Import Excel" untuk memuat data.</td>
+                            <td colspan="8" class="py-8 text-center text-slate-400">Belum ada data siswa. Gunakan tombol "Import Excel" untuk memuat data.</td>
                         </tr>
                     @endforelse
                 </tbody>

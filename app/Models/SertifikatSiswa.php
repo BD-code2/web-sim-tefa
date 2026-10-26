@@ -15,6 +15,7 @@ class SertifikatSiswa extends Model
     protected $fillable = [
         'siswa_user_id',
         'nama_siswa',
+        'tempat_tgl_lahir',
         'nisn',
         'kelas',
         'periode_pkl_id',

@@ -17,6 +17,7 @@ class DataSiswa extends Model
     protected $fillable = [
         'nisn',
         'nama',
+        'tempat_tgl_lahir',
         'kelas',
         'industri',
         'periode_pkl_id',

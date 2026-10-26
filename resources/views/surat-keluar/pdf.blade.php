@@ -8,8 +8,8 @@
         body { font-family: "Times New Roman", serif; font-size: 11pt; line-height: 1.35; color: #111; }
         .kop { width: 100%; border-collapse: collapse; border-bottom: 4px double #000; margin-bottom: 17px; }
         .kop td { text-align: center; vertical-align: middle; padding: 0 3px 8px; }
-        .kop .logo { width: 76px; }
-        .kop img { width: 63px; height: 63px; object-fit: contain; }
+        .kop .logo { width: 112px; }
+        .kop img { width: auto; height: 110px; max-width: 110px; }
         .kop h2, .kop h1, .kop p { margin: 0; }
         .kop h2 { font-size: 12pt; font-weight: bold; }
         .kop h1 { font-size: 15pt; margin: 2px 0; }
@@ -25,7 +25,7 @@
         .agenda td { vertical-align: top; padding: 1px 0; }
         .agenda .label { width: 105px; }
         .agenda .colon { width: 12px; }
-        .ttd { width: 245px; margin: 28px 0 0 auto; text-align: center; }
+        .ttd { width: 245px; margin: 28px 0 0 auto; text-align: left; }
         .ttd p { margin: 0; }
         .ttd .nama { margin-top: 56px; font-weight: bold; text-decoration: underline; }
     </style>

@@ -66,7 +66,7 @@
                                 <span class="text-[11px] text-slate-400 block">{{ $s->program_keahlian }}</span>
                             </td>
                             <td class="py-3.5 px-4 font-medium text-slate-800">
-                                {{ $s->industri->nama_industri ?? '-' }}
+                                {{ $s->nama_industri_pkl ?: ($s->industri?->nama_industri ?? '-') }}
                             </td>
                             <td class="py-3.5 px-4 text-center">
                                 <span class="font-bold text-slate-800">{{ $s->nilai ?? '-' }}</span>

@@ -49,6 +49,9 @@ class PklCertificatePdf
     {
         $sx = $canvas->get_width() / self::REFERENCE_WIDTH;
         $sy = $canvas->get_height() / self::REFERENCE_HEIGHT;
+        $center = self::REFERENCE_WIDTH / 2 * $sx;
+        $principalCenter = 177 * $sx;
+        $industryCenter = 525 * $sx;
         $sans = $fonts->getFont('DejaVu Sans');
         $bold = $fonts->getFont('DejaVu Sans', 'bold');
         $serifBold = $fonts->getFont('Times', 'bold');
@@ -62,19 +65,21 @@ class PklCertificatePdf
         $canvas->image($images['kepri'], 49 * $sx, 30 * $sy, 71 * $sx, 94 * $sy);
         $canvas->image($images['school'], 573 * $sx, 29 * $sy, 73 * $sx, 98 * $sy);
         $canvas->set_opacity(.5);
-        $canvas->image($images['signature'], 84 * $sx, 345 * $sy, 119 * $sx, 81 * $sy);
+        [$signatureWidth, $signatureHeight] = getimagesize($images['signature']);
+        $signatureScale = min(119 * $sx / $signatureWidth, 44 * $sy / $signatureHeight);
+        $canvas->image($images['signature'], $principalCenter - $signatureWidth * $signatureScale / 2, 363 * $sy, $signatureWidth * $signatureScale, $signatureHeight * $signatureScale);
         $canvas->set_opacity(1);
         $canvas->image($images['smk_bisa'], 303 * $sx, 355 * $sy, 96 * $sx, 116 * $sy);
 
-        $this->center($canvas, 'Sertifikat', $serifBold, 74 * $sx, 342 * $sx, 23 * $sy, 360 * $sx);
-        $this->center($canvas, 'Nomor : '.($certificate->no_sertifikat ?: '-'), $serif, 12.3 * $sx, 346 * $sx, 103 * $sy, 490 * $sx);
-        $this->center($canvas, 'Diberikan Kepada', $sans, 12 * $sx, 339 * $sx, 132 * $sy, 500 * $sx);
+        $this->center($canvas, 'Sertifikat', $serifBold, 74 * $sx, $center, 23 * $sy, 360 * $sx);
+        $this->center($canvas, 'Nomor : '.($certificate->no_sertifikat ?: '-'), $serif, 12.3 * $sx, $center, 103 * $sy, 490 * $sx);
+        $this->center($canvas, 'Diberikan Kepada', $sans, 12 * $sx, $center, 132 * $sy, 500 * $sx);
 
         $name = mb_strtoupper($this->clean($certificate->nama_siswa ?: '-'));
         if (preg_match('/[^\x20-\x7e]/u', $name)) {
             $italic = $fonts->getFont('DejaVu Serif', 'italic');
         }
-        $this->centerBlock($canvas, $name, $italic, 27.6 * $sx, 17 * $sx, 338 * $sx, 166 * $sy, 535 * $sx, 2, 22 * $sy);
+        $this->centerBlock($canvas, $name, $italic, 27.6 * $sx, 17 * $sx, $center, 166 * $sy, 535 * $sx, 2, 22 * $sy);
 
         $birth = $this->clean($certificate->getAttribute('tempat_tgl_lahir') ?: '-');
         $details = [
@@ -92,23 +97,23 @@ class PklCertificatePdf
         $industry = $this->clean($certificate->nama_industri_pkl ?: ($certificate->industri?->nama_industri ?? '-'));
         $upperIndustry = mb_strtoupper($industry);
         $predicate = mb_strtoupper($this->clean($certificate->predikat ?: '-'));
-        $this->center($canvas, 'Telah selesai mengikuti Praktik Kerja Lapangan (PKL) pada', $sans, 11.3 * $sx, 342 * $sx, 280 * $sy, 600 * $sx);
-        $this->centerBlock($canvas, $upperIndustry.' dengan Predikat '.$predicate, $sans, 10 * $sx, 8.5 * $sx, 342 * $sx, 296 * $sy, 590 * $sx, 2, 13 * $sy);
+        $this->center($canvas, 'Telah selesai mengikuti Praktik Kerja Lapangan (PKL) pada', $sans, 11.3 * $sx, $center, 280 * $sy, 600 * $sx);
+        $this->centerBlock($canvas, $upperIndustry.' dengan Predikat '.$predicate, $sans, 10 * $sx, 8.5 * $sx, $center, 296 * $sy, 590 * $sx, 2, 13 * $sy);
 
-        $this->center($canvas, 'KEPALA', $sans, 10.5 * $sx, 176 * $sx, 332 * $sy, 235 * $sx);
-        $this->center($canvas, config('pkl.certificate.school_name'), $sans, 10.2 * $sx, 176 * $sx, 349 * $sy, 240 * $sx);
-        $this->center($canvas, 'KEPALA', $sans, 10.5 * $sx, 506 * $sx, 327 * $sy, 250 * $sx);
-        $this->centerBlock($canvas, $upperIndustry, $sans, 10.2 * $sx, 8.5 * $sx, 506 * $sx, 344 * $sy, 275 * $sx, 2, 13 * $sy);
+        $this->center($canvas, 'KEPALA', $sans, 10.5 * $sx, $principalCenter, 327 * $sy, 235 * $sx);
+        $this->center($canvas, config('pkl.certificate.school_name'), $sans, 10.2 * $sx, $principalCenter, 344 * $sy, 240 * $sx);
+        $this->center($canvas, 'KEPALA', $sans, 10.5 * $sx, $industryCenter, 327 * $sy, 250 * $sx);
+        $this->centerBlock($canvas, $upperIndustry, $sans, 10.2 * $sx, 8.5 * $sx, $industryCenter, 344 * $sy, 275 * $sx, 2, 13 * $sy);
 
-        $this->signatureName($canvas, config('pkl.certificate.principal_name'), $bold, 10.5 * $sx, 177 * $sx, 409 * $sy, 200 * $sx);
-        $this->center($canvas, 'NIP '.config('pkl.certificate.principal_nip'), $sans, 9.5 * $sx, 177 * $sx, 431 * $sy, 245 * $sx);
+        $this->signatureName($canvas, config('pkl.certificate.principal_name'), $bold, 10.5 * $sx, $principalCenter, 412 * $sy, 245 * $sx);
+        $this->center($canvas, 'NIP '.config('pkl.certificate.principal_nip'), $sans, 9.5 * $sx, $principalCenter, 433 * $sy, 245 * $sx);
 
         $signer = config('pkl.certificate.industry_signers', [])[$upperIndustry] ?? [];
         $signerName = $certificate->getAttribute('industri_pimpinan') ?: ($signer['name'] ?? '........................................');
         $signerNip = $certificate->getAttribute('industri_nip') ?: ($signer['nip'] ?? null);
-        $this->signatureName($canvas, $signerName, $bold, 9.3 * $sx, 506 * $sx, 405 * $sy, 200 * $sx);
+        $this->signatureName($canvas, $signerName, $bold, 9.3 * $sx, $industryCenter, 412 * $sy, 245 * $sx);
         if ($signerNip) {
-            $this->center($canvas, 'NIP '.$signerNip, $sans, 9.5 * $sx, 506 * $sx, 426 * $sy, 260 * $sx);
+            $this->center($canvas, 'NIP '.$signerNip, $sans, 9.5 * $sx, $industryCenter, 433 * $sy, 260 * $sx);
         }
     }
 
