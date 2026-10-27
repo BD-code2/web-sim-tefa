@@ -96,7 +96,7 @@
             <p class="text-xs text-slate-500">Verifikasi kelengkapan nilai, lalu terbitkan secara resmi agar dapat dicetak.</p>
         </div>
 
-        <div class="flex items-center gap-3">
+        <div class="page-toolbar-actions flex flex-wrap items-center gap-3">
             @if($sertifikat->status === 'draft')
                 <form action="{{ route('sertifikat.status', $sertifikat) }}" method="POST">
                     @csrf

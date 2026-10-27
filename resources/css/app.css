@@ -138,7 +138,25 @@
 
 /* Ukuran isi mengikuti ruang yang tersedia, termasuk saat zoom browser. */
 .sim-sidebar.sim-sidebar-open { transform: translateX(0); }
-.sim-content { overflow-wrap: anywhere; }
+.sim-shell, .sim-auth { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+.sim-shell { --sim-content-gutter: 1rem; }
+.sim-shell > .min-h-screen, .sim-auth > .min-h-screen { min-height: 100dvh; }
+.sim-sidebar { padding-top: env(safe-area-inset-top, 0px); padding-left: env(safe-area-inset-left, 0px); }
+.sim-sidebar-footer { padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px)); }
+.sim-header { padding-top: max(.75rem, env(safe-area-inset-top, 0px)); }
+.sim-header, .sim-content {
+    padding-left: max(var(--sim-content-gutter), env(safe-area-inset-left, 0px));
+    padding-right: max(var(--sim-content-gutter), env(safe-area-inset-right, 0px));
+}
+.sim-content { overflow-wrap: anywhere; padding-bottom: max(var(--sim-content-gutter), env(safe-area-inset-bottom, 0px)); }
+@media (min-width: 640px) {
+    .sim-shell { --sim-content-gutter: 1.5rem; }
+}
+@media (min-width: 1280px) {
+    .sim-shell { --sim-content-gutter: 2.5rem; }
+}
+.sim-page :is(form, fieldset, dl) { min-width: 0; }
+.sim-page :is(input, select, textarea) { scroll-margin-top: 7rem; }
 .sim-page, .sim-page :is(.grid, .flex, .page-filter) > * { min-width: 0; }
 .sim-page :is(.page-toolbar, .page-panel-heading) > :first-child { flex: 1 1 16rem; }
 .sim-page :is(.page-toolbar, .page-panel-heading) > :only-child { flex-basis: auto; }
@@ -172,7 +190,7 @@
 }
 
 /* Ukuran dan jarak konsisten, hanya pada halaman yang memakai sim-page. */
-.sim-page table { width: 100%; border-collapse: collapse; text-align: left; font-size: .875rem; line-height: 1.5; }
+.sim-page table { width: 100%; border-collapse: collapse; text-align: left; font-size: .875rem; line-height: 1.5; overflow-wrap: break-word; word-break: normal; }
 .sim-page thead { background: #f8fafc; color: #475569; text-transform: none; letter-spacing: normal; }
 .sim-page th { padding: .875rem 1.25rem; font-size: .75rem; font-weight: 600; line-height: 1.5; border-bottom: 1px solid #e2e8f0; }
 .sim-page td { padding: 1rem 1.25rem; vertical-align: top; }
@@ -216,8 +234,26 @@
 .sim-page .page-section { padding: 1.5rem; }
 @media (max-width: 639px) {
     .sim-page .page-section { padding: 1.25rem; }
+    .sim-header { align-items: flex-start; }
+    .sim-header h2 { padding-top: .5rem; line-height: 1.5; }
+    .sim-page > :is(.p-6, .p-8) { padding: 1.25rem; }
+    .sim-page .page-intro { font-size: .875rem; line-height: 1.75; }
+    .sim-page :is(a, button).ui-action, .sim-page form button { min-height: 44px; white-space: normal; }
+    .sim-page .page-toolbar-actions { display: flex; width: 100%; flex-wrap: wrap; }
+    .sim-page .page-toolbar-actions > :is(a, button, form) { flex: 1 1 100%; }
+    .sim-page .page-toolbar-actions > form > button { width: 100%; }
+    .sim-page nav[role="navigation"] :is(a, span.relative) { min-height: 44px; align-items: center; }
     .sim-page .page-form-footer > :is(a, button) { width: 100%; }
     .sim-page .page-form-footer > form { width: 100%; }
     .sim-page .page-form-footer > form > button { width: 100%; }
+}
+/* Isian tetap terbaca dalam posisi mendatar dan pada tablet layar sentuh. */
+@media (pointer: coarse) {
+    .sim-content .sim-page form input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]),
+    .sim-content .sim-page form select,
+    .sim-content .sim-page form textarea:not(.hidden),
+    .sim-auth input:not([type="checkbox"]):not([type="radio"]) { font-size: 1rem; }
+    .sim-page :is(a, button).ui-action, .sim-page form button { min-height: 44px; }
+    .sim-page .ui-action-icon { min-width: 44px; }
 }
 [x-cloak] { display: none !important; }

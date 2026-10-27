@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'SIM SMKN 4 Tanjungpinang') }} - @yield('title', 'Dashboard')</title>
@@ -144,7 +144,7 @@
         <!-- Main Wrapper Konten Kanan -->
         <div class="sim-main flex-1 flex flex-col" :inert="sidebarOpen && !desktop">
             <!-- Top Navbar -->
-            <header class="min-h-20 bg-white border-b border-slate-200/80 sticky top-0 z-20 flex items-center justify-between gap-3 px-4 py-3 sm:px-6 xl:px-10">
+            <header class="sim-header min-h-20 bg-white border-b border-slate-200/80 sticky top-0 z-20 flex items-center justify-between gap-3 px-4 py-3 sm:px-6 xl:px-10">
                 <!-- Mobile toggle & Judul Halaman -->
                 <div class="flex min-w-0 items-center gap-2 sm:gap-4">
                     <button type="button" x-ref="sidebarToggle" aria-label="Buka menu" aria-controls="menu-utama" :aria-expanded="sidebarOpen" @click="openSidebar()" class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 lg:hidden">

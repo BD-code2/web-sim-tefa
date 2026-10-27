@@ -53,7 +53,7 @@
                 <button type="submit" class="page-button bg-blue-600 hover:bg-blue-500 text-white ui-action justify-center">
                     <x-ui.icon name="filter" /> Terapkan Filter
                 </button>
-                <div class="flex gap-2">
+                <div class="flex flex-wrap gap-2">
                     <a href="{{ route('laporan-surat.index') }}" class="page-button border border-slate-300 text-slate-600 hover:bg-slate-50 ui-action justify-center flex-1">
                         <x-ui.icon name="reset" /> Reset
                     </a>
@@ -77,7 +77,7 @@
 
     @foreach($filter['jenis'] as $jenis)
         <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
-            <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+            <div class="px-5 py-4 border-b border-slate-100 flex flex-wrap items-center justify-between gap-2">
                 <h3 class="font-bold text-slate-800">Pratinjau {{ $jenisLabel[$jenis] }}</h3>
                 @if($laporan[$jenis]->count() > 10)
                     <span class="text-xs text-slate-500">Menampilkan 10 dari {{ $laporan[$jenis]->count() }} data</span>

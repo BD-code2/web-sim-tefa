@@ -9,7 +9,7 @@
         <a href="{{ route('kerja-sama.show', $kerjaSama) }}" class="text-sm font-semibold text-blue-600 hover:text-blue-700 ui-action">
             <x-ui.icon name="back" /> Kembali ke {{ $kerjaSama->nama_industri }}
         </a>
-        <div class="flex items-center gap-2">
+        <div class="flex flex-wrap items-center gap-2">
             <a href="{{ route('kerja-sama.agenda.edit', [$kerjaSama, $agenda]) }}" class="page-button bg-amber-500 hover:bg-amber-600 text-white ui-action">
                 <x-ui.icon name="pencil" /> Edit Agenda
             </a>
@@ -28,7 +28,7 @@
                     <p class="text-xs font-semibold uppercase tracking-wider text-blue-100">Agenda {{ $kerjaSama->nama_industri }}</p>
                     <h1 class="mt-2 text-2xl font-bold">{{ $agenda->judul }}</h1>
                 </div>
-                <div class="flex gap-2">
+                <div class="flex flex-wrap gap-2">
                     <span class="px-3 py-1 rounded-full bg-white/20 text-xs font-semibold capitalize">{{ $agenda->tipe }}</span>
                     @if($agenda->is_penting)<span class="px-3 py-1 rounded-full bg-rose-400 text-slate-900 text-xs font-bold">Penting</span>@endif
                 </div>

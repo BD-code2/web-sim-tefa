@@ -12,7 +12,7 @@
         <div>
             <p class="page-intro text-slate-500">{{ $agendaPage ? 'Impor siswa dari Excel ke agenda ini. PKL dapat disiapkan, diselesaikan, diterbitkan, dan diunduh per siswa atau sekaligus per kelas. Industri siswa dibaca dari Excel.' : 'Buat agenda beserta periode PKL terlebih dahulu. Buka agenda untuk mengimpor siswa dan mengelola proses PKL per siswa maupun per kelas.' }}</p>
         </div>
-        <div class="flex flex-wrap items-center gap-2">
+        <div class="page-toolbar-actions flex flex-wrap items-center gap-2">
             @if($agendaPage)
                 <a href="{{ route('data-siswa.index') }}" class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 ui-action"><x-ui.icon name="back" /> Kembali ke Arsip Agenda</a>
             @else
@@ -61,7 +61,7 @@
                     @if($periodeTerpilih->agenda)<p class="mt-1 text-sm text-slate-600">{{ $periodeTerpilih->agenda }}</p>@endif
                     <p class="mt-2 text-xs font-semibold text-blue-700">Periode {{ $periodeTerpilih->tanggal_mulai->format('d/m/Y') }} – {{ $periodeTerpilih->tanggal_selesai->format('d/m/Y') }}</p>
                 </div>
-                <div class="flex flex-wrap gap-2">
+                <div class="page-toolbar-actions flex flex-wrap gap-2">
                     <a href="{{ route('data-siswa.periode.edit', $periodeTerpilih) }}" class="page-button ui-action"><x-ui.icon name="pencil" /> Edit nama agenda</a>
                     <a href="{{ route('data-siswa.import', ['periode_pkl_id' => $periodeTerpilih->id]) }}" class="rounded-xl bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800 ui-action"><x-ui.icon name="upload" /> Import Siswa ke Periode Ini</a>
                 </div>
