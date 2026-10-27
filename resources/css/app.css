@@ -205,6 +205,10 @@
 .sim-page .page-table-scroll table { min-width: 760px; }
 .sim-page .page-table-actions th:last-child, .sim-page .page-table-actions td:last-child { text-align: right; }
 .sim-page .page-table-actions td:last-child > .flex { justify-content: flex-end; }
+/* Jaga nama siswa tetap terbaca saat tabel digeser pada layar kecil. */
+.sim-page .student-list-table { min-width: 70rem; overflow-wrap: normal; word-break: normal; }
+.sim-page .student-list-table :is(th, td):nth-child(2) { min-width: 16rem; }
+.sim-page .student-list-table :is(th, td):first-child { white-space: nowrap; }
 .sim-page .text-slate-400 { color: #64748b; }
 .sim-page [class~="text-[10px]"], .sim-page [class~="text-[11px]"] { font-size: .75rem; line-height: 1.5; }
 .sim-page form label > :is(input, select, textarea) { margin-top: .5rem; }

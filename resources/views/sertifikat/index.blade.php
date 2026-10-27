@@ -38,8 +38,9 @@
 
     <!-- Tabel Data Sertifikat -->
     <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="page-table-actions w-full text-left text-xs">
+        <p class="px-4 py-3 text-xs text-slate-500 lg:hidden">Geser tabel ke samping untuk melihat detail dan aksi siswa.</p>
+        <div class="overflow-x-auto" tabindex="0" role="region" aria-label="Daftar sertifikat siswa">
+            <table class="page-table-actions student-list-table w-full text-left text-xs">
                 <thead class="bg-slate-50/80 border-b border-slate-200 text-slate-500 uppercase tracking-wider font-semibold">
                     <tr>
                         <th scope="col" class="py-3.5 px-4">No. Sertifikat</th>
