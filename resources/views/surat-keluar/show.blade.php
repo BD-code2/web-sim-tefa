@@ -6,7 +6,7 @@
 @section('content')
 <div class="sim-page space-y-6">
     <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <a href="{{ auth()->user()->isKepalaSekolah() ? route('disposisi.antrian', ['tab' => 'persetujuan']) : route('surat-keluar.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 transition hover:text-blue-700 ui-action"><x-ui.icon name="back" /> {{ auth()->user()->isKepalaSekolah() ? 'Daftar persetujuan surat' : 'Buku agenda surat keluar' }}</a>
+        <a href="{{ auth()->user()->isKepalaTU() ? route('surat-keluar.pemeriksaan-kepala-tu') : (auth()->user()->isKepalaSekolah() ? route('disposisi.antrian', ['tab' => 'persetujuan']) : route('surat-keluar.index')) }}" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 transition hover:text-blue-700 ui-action"><x-ui.icon name="back" /> {{ auth()->user()->isKepalaTU() ? 'Pemeriksaan Surat' : (auth()->user()->isKepalaSekolah() ? 'Daftar persetujuan surat' : 'Buku agenda surat keluar') }}</a>
         <div class="flex flex-wrap items-center gap-2">
             @if(auth()->user()->isTU() && $suratKeluar->status === 'disetujui')
             <a href="{{ route('surat-keluar.pdf', $suratKeluar) }}" target="_blank" class="inline-flex items-center gap-2 rounded-xl bg-rose-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-800 focus:outline-none focus:ring-4 focus:ring-rose-100 ui-action">
