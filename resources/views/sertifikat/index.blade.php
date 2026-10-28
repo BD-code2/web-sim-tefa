@@ -5,11 +5,11 @@
 
 @section('content')
 <div class="sim-page space-y-6">
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div class="page-toolbar">
         <div>
             <p class="page-intro text-slate-500">Kelola tahapan PKL dan sertifikat per siswa: selesaikan PKL, terbitkan sertifikat, lalu unduh PDF siswa tersebut. Data peserta dan agenda dikelola melalui menu Sertifikat dan PKL.</p>
         </div>
-        <a href="{{ route('data-siswa.index') }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0A4DBA] hover:bg-blue-700 text-white text-sm font-semibold shadow-sm transition-all ui-action"><x-ui.icon name="folder-open" /> Kelola Agenda, Periode &amp; Peserta PKL</a>
+        <a href="{{ route('data-siswa.index') }}" class="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0A4DBA] hover:bg-blue-700 text-white text-sm font-semibold shadow-sm transition-all ui-action"><x-ui.icon name="folder-open" /> Kelola Agenda, Periode &amp; Peserta PKL</a>
     </div>
 
     <!-- Filter & Search -->
@@ -38,9 +38,9 @@
 
     <!-- Tabel Data Sertifikat -->
     <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
-        <p class="px-4 py-3 text-xs text-slate-500 lg:hidden">Geser tabel ke samping untuk melihat detail dan aksi siswa.</p>
-        <div class="overflow-x-auto" tabindex="0" role="region" aria-label="Daftar sertifikat siswa">
-            <table class="page-table-actions student-list-table w-full text-left text-xs">
+        <p class="px-4 py-3 text-xs text-slate-500">Geser tabel ke samping untuk melihat detail dan aksi siswa.</p>
+        <div class="overflow-x-auto directory-scroll" tabindex="0" role="region" aria-label="Daftar sertifikat siswa">
+            <table class="page-table-actions directory-table student-list-table w-full text-left text-xs">
                 <thead class="bg-slate-50/80 border-b border-slate-200 text-slate-500 uppercase tracking-wider font-semibold">
                     <tr>
                         <th scope="col" class="py-3.5 px-4">No. Sertifikat</th>
@@ -66,14 +66,14 @@
                                 <span class="font-medium text-slate-700">{{ $s->kelas }}</span>
                                 <span class="text-[11px] text-slate-400 block">{{ $s->program_keahlian }}</span>
                             </td>
-                            <td class="py-3.5 px-4 font-medium text-slate-800">
+                            <td class="directory-name py-3.5 px-4 font-medium text-slate-800">
                                 {{ $s->nama_industri_pkl ?: ($s->industri?->nama_industri ?? '-') }}
                             </td>
                             <td class="py-3.5 px-4 text-center">
                                 <span class="font-bold text-slate-800">{{ $s->nilai ?? '-' }}</span>
                                 <span class="text-[10px] text-slate-400 block">{{ $s->predikat ?? '' }}</span>
                             </td>
-                            <td class="py-3.5 px-4 text-center">
+                            <td class="directory-status py-3.5 px-4 text-center">
                                 @if($s->status === 'diterbitkan')
                                     <span class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-700">Diterbitkan</span>
                                 @elseif($s->status === 'terverifikasi')

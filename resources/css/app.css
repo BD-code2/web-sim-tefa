@@ -225,8 +225,21 @@
 .sim-page .page-table-actions td:last-child > .flex { justify-content: flex-end; }
 /* Jaga nama siswa tetap terbaca saat tabel digeser pada layar kecil. */
 .sim-page .student-list-table { min-width: 70rem; overflow-wrap: normal; word-break: normal; }
-.sim-page .student-list-table :is(th, td):nth-child(2) { min-width: 16rem; }
+.sim-page .student-list-table :is(th, td):nth-child(2) { min-width: 16rem; white-space: nowrap; }
 .sim-page .student-list-table :is(th, td):first-child { white-space: nowrap; }
+/* Nama dan identitas tetap sejajar pada daftar yang dapat digeser. */
+.sim-page .directory-table { min-width: 70rem; overflow-wrap: normal; }
+.sim-page .directory-table th { white-space: nowrap; }
+.sim-page .directory-table .directory-name,
+.sim-page .directory-table .directory-meta { white-space: nowrap; }
+.sim-page .directory-table .directory-name { min-width: 16rem; }
+.sim-page .directory-table .directory-address { min-width: 18rem; max-width: 24rem; white-space: normal; overflow-wrap: anywhere; }
+.sim-page .directory-table .directory-status { min-width: 11rem; }
+.sim-page .directory-table .directory-status > span { display: inline-flex; white-space: nowrap; }
+.sim-page .directory-table td:last-child > .flex { flex-wrap: nowrap; }
+.sim-page .directory-table td:last-child > .flex > * { flex-shrink: 0; }
+.sim-page .directory-table td:last-child select { min-width: 9rem; }
+.sim-page .directory-scroll:focus-visible { outline: 2px solid #2563eb; outline-offset: -2px; }
 .sim-page .text-slate-400 { color: #64748b; }
 .sim-page [class~="text-[10px]"], .sim-page [class~="text-[11px]"] { font-size: .75rem; line-height: 1.5; }
 .sim-page form label > :is(input, select, textarea) { margin-top: .5rem; }

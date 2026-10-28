@@ -136,9 +136,9 @@
 
     <!-- Tabel Data Siswa -->
     <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
-        <p class="px-4 py-3 text-xs text-slate-500 lg:hidden">Geser tabel ke samping untuk melihat detail dan aksi siswa.</p>
-        <div class="overflow-x-auto" tabindex="0" role="region" aria-label="Daftar siswa hasil impor">
-            <table class="page-table-actions student-list-table w-full text-left text-xs">
+        <p class="px-4 py-3 text-xs text-slate-500">Geser tabel ke samping untuk melihat detail dan aksi siswa.</p>
+        <div class="overflow-x-auto directory-scroll" tabindex="0" role="region" aria-label="Daftar siswa hasil impor">
+            <table class="page-table-actions directory-table student-list-table w-full text-left text-xs">
                 <thead class="bg-slate-50/80 border-b border-slate-200 text-slate-500 uppercase tracking-wider font-semibold">
                     <tr>
                         <th scope="col" class="py-3.5 px-4">NISN</th>
@@ -156,15 +156,15 @@
                         <tr class="hover:bg-blue-50/30 transition">
                             <td class="py-3.5 px-4 font-mono font-semibold text-blue-600">{{ $siswa->nisn }}</td>
                             <td class="py-3.5 px-4 font-bold text-slate-800">{{ $siswa->nama }}</td>
-                            <td class="py-3.5 px-4 font-semibold">{{ $siswa->kelas ?? 'Belum diimpor' }}</td>
+                            <td class="directory-meta py-3.5 px-4 font-semibold">{{ $siswa->kelas ?? 'Belum diimpor' }}</td>
                             @php($pkl = $pklByNisn->get($siswa->nisn))
-                            <td class="py-3.5 px-4 font-medium text-slate-700">{{ $pkl?->program_keahlian ?? '-' }}</td>
-                            <td class="py-3.5 px-4 font-medium text-slate-700">{{ $pkl?->nama_industri_pkl ?? $siswa->industri ?? $pkl?->industri?->nama_industri ?? '-' }}</td>
+                            <td class="directory-name py-3.5 px-4 font-medium text-slate-700">{{ $pkl?->program_keahlian ?? '-' }}</td>
+                            <td class="directory-name py-3.5 px-4 font-medium text-slate-700">{{ $pkl?->nama_industri_pkl ?? $siswa->industri ?? $pkl?->industri?->nama_industri ?? '-' }}</td>
                             <td class="py-3.5 px-4 text-center">
                                 <span class="font-bold text-slate-800">{{ $pkl?->nilai ?? '-' }}</span>
                                 <span class="text-xs text-slate-500 block">{{ $pkl?->predikat ?? 'Belum dinilai' }}</span>
                             </td>
-                            <td class="py-3.5 px-4 text-center">
+                            <td class="directory-status py-3.5 px-4 text-center">
                                 @if($pkl?->status === 'diterbitkan')
                                     <span class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-700">Sertifikat Terbit</span>
                                 @elseif($pkl?->status === 'terverifikasi')

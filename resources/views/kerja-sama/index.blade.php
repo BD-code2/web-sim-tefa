@@ -6,11 +6,11 @@
 @section('content')
 <div class="sim-page space-y-6">
     <!-- Subtitle & Tombol Tambah Kerja Sama Sesuai Mockup -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div class="page-toolbar">
         <div>
         <p class="page-intro text-slate-500">Kelola identitas mitra industri, dokumen MoU, serta masa berlaku kerja sama. Mitra baru yang ditambahkan TU menunggu persetujuan Humas; penambahan oleh Humas tidak memerlukan persetujuan.</p>
         </div>
-        <a href="{{ route('kerja-sama.create') }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0A4DBA] hover:bg-blue-700 text-white text-sm font-semibold shadow-sm transition-all ui-action"><x-ui.icon name="plus" /> Tambah Kerja Sama</a>
+        <a href="{{ route('kerja-sama.create') }}" class="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0A4DBA] hover:bg-blue-700 text-white text-sm font-semibold shadow-sm transition-all ui-action"><x-ui.icon name="plus" /> Tambah Kerja Sama</a>
     </div>
 
     <!-- 4 Stats Cards Persis Seperti di Mockup -->
@@ -103,8 +103,9 @@
 
     <!-- Tabel Data Kerja Sama Industri -->
     <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="page-table-actions w-full text-left text-xs">
+        <p class="px-4 py-3 text-xs text-slate-500">Geser tabel ke samping untuk melihat detail dan aksi kerja sama.</p>
+        <div class="overflow-x-auto directory-scroll" tabindex="0" role="region" aria-label="Daftar kerja sama industri">
+            <table class="page-table-actions directory-table w-full text-left text-xs">
                 <thead class="bg-slate-50/80 border-b border-slate-200 text-slate-500 uppercase tracking-wider font-semibold">
                     <tr>
                         <th scope="col" class="py-3.5 px-4 w-12 text-center">No</th>
@@ -121,16 +122,16 @@
                     @forelse($industris as $index => $item)
                         <tr class="hover:bg-blue-50/30 transition">
                             <td class="py-3.5 px-4 text-center font-medium">{{ $industris->firstItem() + $index }}</td>
-                            <td class="py-3.5 px-4 font-semibold text-slate-800">
+                            <td class="directory-name py-3.5 px-4 font-semibold text-slate-800">
                                 <a href="{{ route('kerja-sama.show', $item) }}" class="hover:text-blue-600">
                                     {{ $item->nama_industri }}
                                 </a>
                             </td>
-                            <td class="py-3.5 px-4 text-slate-500 max-w-xs truncate">{{ $item->alamat }}</td>
-                            <td class="py-3.5 px-4 font-mono">{{ $item->kontak ?? '-' }}</td>
-                            <td class="py-3.5 px-4">{{ $item->tanggal_mulai->format('d/m/Y') }}</td>
-                            <td class="py-3.5 px-4">{{ $item->tanggal_berakhir->format('d/m/Y') }}</td>
-                            <td class="py-3.5 px-4 text-center">
+                            <td class="directory-address py-3.5 px-4 text-slate-500">{{ $item->alamat }}</td>
+                            <td class="directory-meta py-3.5 px-4 font-mono">{{ $item->kontak ?? '-' }}</td>
+                            <td class="directory-meta py-3.5 px-4">{{ $item->tanggal_mulai->format('d/m/Y') }}</td>
+                            <td class="directory-meta py-3.5 px-4">{{ $item->tanggal_berakhir->format('d/m/Y') }}</td>
+                            <td class="directory-status py-3.5 px-4 text-center">
                                 @if($item->approval_status === 'pending')
                                     <span class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-amber-100 text-amber-800">Menunggu Persetujuan</span>
                                 @elseif($item->approval_status === 'rejected')
