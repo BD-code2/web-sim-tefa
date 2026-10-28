@@ -5,7 +5,9 @@
 @section('content')
 <div class="sim-page">
     <div class="page-toolbar">
-        <a href="{{ route('disposisi.antrian') }}" class="font-semibold text-slate-600 hover:text-blue-700 ui-action"><x-ui.icon name="back" /> Pemantauan disposisi</a>
+        <div>
+            <a href="{{ route('disposisi.antrian') }}" class="font-semibold text-slate-600 hover:text-blue-700 ui-action"><x-ui.icon name="back" /> Pemantauan disposisi</a>
+        </div>
         @if(auth()->user()->isKepalaSekolah())<a href="{{ route('disposisi.cetak', $disposisi) }}" target="_blank" rel="noopener" class="page-button ui-action"><x-ui.icon name="printer" /> Cetak lembar disposisi</a>@endif
     </div>
     <section class="page-panel">
