@@ -51,7 +51,9 @@ class PklCertificatePdf
         $sy = $canvas->get_height() / self::REFERENCE_HEIGHT;
         $center = self::REFERENCE_WIDTH / 2 * $sx;
         $principalLeft = 54.5 * $sx;
-        $industryLeft = 402.5 * $sx;
+        $industryLeft = 420.5 * $sx;
+        // Jaga margin kanan sejajar dengan margin kiri blok Kepala Sekolah.
+        $industryWidth = 227 * $sx;
         $sans = $fonts->getFont('DejaVu Sans');
         $bold = $fonts->getFont('DejaVu Sans', 'bold');
         $serifBold = $fonts->getFont('Times', 'bold');
@@ -97,8 +99,8 @@ class PklCertificatePdf
 
         $this->left($canvas, 'KEPALA', $sans, 10.5 * $sx, $principalLeft, 327 * $sy, 235 * $sx);
         $this->left($canvas, config('pkl.certificate.school_name'), $sans, 10.2 * $sx, $principalLeft, 344 * $sy, 240 * $sx);
-        $this->left($canvas, 'KEPALA', $sans, 10.5 * $sx, $industryLeft, 327 * $sy, 250 * $sx);
-        $this->centerBlock($canvas, $upperIndustry, $sans, 10.2 * $sx, 8.5 * $sx, $industryLeft + 122.5 * $sx, 344 * $sy, 245 * $sx, 2, 13 * $sy, true);
+        $this->left($canvas, 'KEPALA', $sans, 10.5 * $sx, $industryLeft, 327 * $sy, $industryWidth);
+        $this->centerBlock($canvas, $upperIndustry, $sans, 10.2 * $sx, 8.5 * $sx, $industryLeft + $industryWidth / 2, 344 * $sy, $industryWidth, 2, 13 * $sy, true);
 
         $this->signatureName($canvas, config('pkl.certificate.principal_name'), $bold, 10.5 * $sx, $principalLeft, 412 * $sy, 245 * $sx);
         $this->left($canvas, 'NIP '.config('pkl.certificate.principal_nip'), $sans, 9.5 * $sx, $principalLeft, 433 * $sy, 245 * $sx);
@@ -106,9 +108,9 @@ class PklCertificatePdf
         $signer = config('pkl.certificate.industry_signers', [])[$upperIndustry] ?? [];
         $signerName = $certificate->getAttribute('industri_pimpinan') ?: ($signer['name'] ?? '........................................');
         $signerNip = $certificate->getAttribute('industri_nip') ?: ($signer['nip'] ?? null);
-        $this->signatureName($canvas, $signerName, $bold, 9.3 * $sx, $industryLeft, 412 * $sy, 245 * $sx);
+        $this->signatureName($canvas, $signerName, $bold, 9.3 * $sx, $industryLeft, 412 * $sy, $industryWidth);
         if ($signerNip) {
-            $this->left($canvas, 'NIP '.$signerNip, $sans, 9.5 * $sx, $industryLeft, 433 * $sy, 260 * $sx);
+            $this->left($canvas, 'NIP '.$signerNip, $sans, 9.5 * $sx, $industryLeft, 433 * $sy, $industryWidth);
         }
     }
 

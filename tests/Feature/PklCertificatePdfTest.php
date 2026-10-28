@@ -148,7 +148,7 @@ class PklCertificatePdfTest extends TestCase
         $draw = new \ReflectionMethod(PklCertificatePdf::class, 'draw');
         $draw->invoke($builder, $canvas, $document->getDomPDF()->getFontMetrics(), $certificate, app(PklCertificateAssets::class)->prepare());
 
-        $this->assertEqualsWithDelta(402.5, $positions['Drs. H. EDI BATARA, M.A.P.']['x'], .01);
+        $this->assertEqualsWithDelta(420.5, $positions['Drs. H. EDI BATARA, M.A.P.']['x'], .01);
         $this->assertArrayHasKey('Kijang / 08 Oktober 2007', $positions);
         $this->assertEqualsWithDelta(351, $positions['Sertifikat']['center'], .01);
         $this->assertEqualsWithDelta(54.5, $positions[config('pkl.certificate.principal_name')]['x'], .01);
