@@ -41,7 +41,7 @@ class PklCertificatePdfTest extends TestCase
         return (int) ($matches[1] ?? 0);
     }
 
-    public function test_sertifikat_satuan_satu_halaman_dengan_enam_aset_tertanam(): void
+    public function test_sertifikat_satuan_satu_halaman_dengan_lima_aset_tanpa_tanda_tangan(): void
     {
         $document = app(PklCertificatePdf::class)->create([$this->certificate()]);
         $canvas = $document->getDomPDF()->getCanvas();
@@ -52,7 +52,7 @@ class PklCertificatePdfTest extends TestCase
         $this->assertStringStartsWith('%PDF-', $binary);
         $this->assertStringContainsString('SYARIFAH NAZURA NAZALYA', $binary);
         $this->assertStringContainsString('SERT/2026/0001', $binary);
-        $this->assertGreaterThanOrEqual(6, preg_match_all('/\/Subtype\s*\/Image\b/', $binary));
+        $this->assertGreaterThanOrEqual(5, preg_match_all('/\/Subtype\s*\/Image\b/', $binary));
     }
 
     public function test_satu_kelas_satu_halaman_per_siswa_dan_gambar_digunakan_ulang(): void
@@ -142,15 +142,17 @@ class PklCertificatePdfTest extends TestCase
         $canvas->shouldReceive('get_font_height')->andReturn(14);
         $positions = [];
         $canvas->shouldReceive('text')->andReturnUsing(function ($x, $y, $text, $font, $size) use (&$positions) {
-            $positions[$text] = ['center' => $x + strlen($text) * $size / 4, 'y' => $y];
+            $positions[$text] = ['x' => $x, 'center' => $x + strlen($text) * $size / 4, 'y' => $y];
         });
+        $canvas->shouldNotReceive('image')->withArgs(fn ($path, ...$args) => $path === app(PklCertificateAssets::class)->prepare()['signature']);
         $draw = new \ReflectionMethod(PklCertificatePdf::class, 'draw');
         $draw->invoke($builder, $canvas, $document->getDomPDF()->getFontMetrics(), $certificate, app(PklCertificateAssets::class)->prepare());
 
+        $this->assertEqualsWithDelta(402.5, $positions['Drs. H. EDI BATARA, M.A.P.']['x'], .01);
         $this->assertArrayHasKey('Kijang / 08 Oktober 2007', $positions);
         $this->assertEqualsWithDelta(351, $positions['Sertifikat']['center'], .01);
-        $this->assertEqualsWithDelta(177, $positions[config('pkl.certificate.principal_name')]['center'], .01);
-        $this->assertEqualsWithDelta(177, $positions['NIP '.config('pkl.certificate.principal_nip')]['center'], .01);
+        $this->assertEqualsWithDelta(54.5, $positions[config('pkl.certificate.principal_name')]['x'], .01);
+        $this->assertEqualsWithDelta(54.5, $positions['NIP '.config('pkl.certificate.principal_nip')]['x'], .01);
         $this->assertEquals($positions[config('pkl.certificate.principal_name')]['y'], $positions['Drs. H. EDI BATARA, M.A.P.']['y']);
     }
 }

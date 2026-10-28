@@ -50,8 +50,8 @@ class PklCertificatePdf
         $sx = $canvas->get_width() / self::REFERENCE_WIDTH;
         $sy = $canvas->get_height() / self::REFERENCE_HEIGHT;
         $center = self::REFERENCE_WIDTH / 2 * $sx;
-        $principalCenter = 177 * $sx;
-        $industryCenter = 525 * $sx;
+        $principalLeft = 54.5 * $sx;
+        $industryLeft = 402.5 * $sx;
         $sans = $fonts->getFont('DejaVu Sans');
         $bold = $fonts->getFont('DejaVu Sans', 'bold');
         $serifBold = $fonts->getFont('Times', 'bold');
@@ -64,11 +64,6 @@ class PklCertificatePdf
         $canvas->image($images['watermark'], 265 * $sx, 188 * $sy, 166 * $sx, 145 * $sy);
         $canvas->image($images['kepri'], 49 * $sx, 30 * $sy, 71 * $sx, 94 * $sy);
         $canvas->image($images['school'], 573 * $sx, 29 * $sy, 73 * $sx, 98 * $sy);
-        $canvas->set_opacity(.5);
-        [$signatureWidth, $signatureHeight] = getimagesize($images['signature']);
-        $signatureScale = min(119 * $sx / $signatureWidth, 44 * $sy / $signatureHeight);
-        $canvas->image($images['signature'], $principalCenter - $signatureWidth * $signatureScale / 2, 363 * $sy, $signatureWidth * $signatureScale, $signatureHeight * $signatureScale);
-        $canvas->set_opacity(1);
         $canvas->image($images['smk_bisa'], 303 * $sx, 355 * $sy, 96 * $sx, 116 * $sy);
 
         $this->center($canvas, 'Sertifikat', $serifBold, 74 * $sx, $center, 23 * $sy, 360 * $sx);
@@ -100,20 +95,20 @@ class PklCertificatePdf
         $this->center($canvas, 'Telah selesai mengikuti Praktik Kerja Lapangan (PKL) pada', $sans, 11.3 * $sx, $center, 280 * $sy, 600 * $sx);
         $this->centerBlock($canvas, $upperIndustry.' dengan Predikat '.$predicate, $sans, 10 * $sx, 8.5 * $sx, $center, 296 * $sy, 590 * $sx, 2, 13 * $sy);
 
-        $this->center($canvas, 'KEPALA', $sans, 10.5 * $sx, $principalCenter, 327 * $sy, 235 * $sx);
-        $this->center($canvas, config('pkl.certificate.school_name'), $sans, 10.2 * $sx, $principalCenter, 344 * $sy, 240 * $sx);
-        $this->center($canvas, 'KEPALA', $sans, 10.5 * $sx, $industryCenter, 327 * $sy, 250 * $sx);
-        $this->centerBlock($canvas, $upperIndustry, $sans, 10.2 * $sx, 8.5 * $sx, $industryCenter, 344 * $sy, 275 * $sx, 2, 13 * $sy);
+        $this->left($canvas, 'KEPALA', $sans, 10.5 * $sx, $principalLeft, 327 * $sy, 235 * $sx);
+        $this->left($canvas, config('pkl.certificate.school_name'), $sans, 10.2 * $sx, $principalLeft, 344 * $sy, 240 * $sx);
+        $this->left($canvas, 'KEPALA', $sans, 10.5 * $sx, $industryLeft, 327 * $sy, 250 * $sx);
+        $this->centerBlock($canvas, $upperIndustry, $sans, 10.2 * $sx, 8.5 * $sx, $industryLeft + 122.5 * $sx, 344 * $sy, 245 * $sx, 2, 13 * $sy, true);
 
-        $this->signatureName($canvas, config('pkl.certificate.principal_name'), $bold, 10.5 * $sx, $principalCenter, 412 * $sy, 245 * $sx);
-        $this->center($canvas, 'NIP '.config('pkl.certificate.principal_nip'), $sans, 9.5 * $sx, $principalCenter, 433 * $sy, 245 * $sx);
+        $this->signatureName($canvas, config('pkl.certificate.principal_name'), $bold, 10.5 * $sx, $principalLeft, 412 * $sy, 245 * $sx);
+        $this->left($canvas, 'NIP '.config('pkl.certificate.principal_nip'), $sans, 9.5 * $sx, $principalLeft, 433 * $sy, 245 * $sx);
 
         $signer = config('pkl.certificate.industry_signers', [])[$upperIndustry] ?? [];
         $signerName = $certificate->getAttribute('industri_pimpinan') ?: ($signer['name'] ?? '........................................');
         $signerNip = $certificate->getAttribute('industri_nip') ?: ($signer['nip'] ?? null);
-        $this->signatureName($canvas, $signerName, $bold, 9.3 * $sx, $industryCenter, 412 * $sy, 245 * $sx);
+        $this->signatureName($canvas, $signerName, $bold, 9.3 * $sx, $industryLeft, 412 * $sy, 245 * $sx);
         if ($signerNip) {
-            $this->center($canvas, 'NIP '.$signerNip, $sans, 9.5 * $sx, $industryCenter, 433 * $sy, 260 * $sx);
+            $this->left($canvas, 'NIP '.$signerNip, $sans, 9.5 * $sx, $industryLeft, 433 * $sy, 260 * $sx);
         }
     }
 
@@ -129,21 +124,23 @@ class PklCertificatePdf
         $canvas->text($x, $y, $text, $font, $this->fit($canvas, $text, $font, $size, $maxWidth));
     }
 
-    private function signatureName(Canvas $canvas, string $text, string $font, float $size, float $center, float $y, float $maxWidth): void
+    private function signatureName(Canvas $canvas, string $text, string $font, float $size, float $x, float $y, float $maxWidth): void
     {
         $size = $this->fit($canvas, $text, $font, $size, $maxWidth);
         $width = $canvas->get_text_width($text, $font, $size);
-        $canvas->text($center - $width / 2, $y, $text, $font, $size);
+        $canvas->text($x, $y, $text, $font, $size);
         $lineY = $y + $canvas->get_font_height($font, $size);
-        $canvas->line($center - $width / 2, $lineY, $center + $width / 2, $lineY, [0, 0, 0], .5);
+        $canvas->line($x, $lineY, $x + $width, $lineY, [0, 0, 0], .5);
     }
 
     /** Teks panjang mengecil atau memakai dua baris di dalam bidang tetap. */
-    private function centerBlock(Canvas $canvas, string $text, string $font, float $size, float $minimumSize, float $center, float $y, float $maxWidth, int $maxLines, float $lineHeight): void
+    private function centerBlock(Canvas $canvas, string $text, string $font, float $size, float $minimumSize, float $center, float $y, float $maxWidth, int $maxLines, float $lineHeight, bool $alignLeft = false): void
     {
         $fit = $this->fit($canvas, $text, $font, $size, $maxWidth);
         if ($fit >= $minimumSize) {
-            $this->center($canvas, $text, $font, $fit, $center, $y, $maxWidth);
+            $alignLeft
+                ? $this->left($canvas, $text, $font, $fit, $center - $maxWidth / 2, $y, $maxWidth)
+                : $this->center($canvas, $text, $font, $fit, $center, $y, $maxWidth);
 
             return;
         }
@@ -154,7 +151,9 @@ class PklCertificatePdf
         $split = max(1, (int) ceil(count($words) / $maxLines));
         $lines = array_map(fn ($chunk) => implode(' ', $chunk), array_chunk($words, $split));
         foreach ($lines as $index => $line) {
-            $this->center($canvas, $line, $font, $minimumSize, $center, $y + $index * $lineHeight, $maxWidth);
+            $alignLeft
+                ? $this->left($canvas, $line, $font, $minimumSize, $center - $maxWidth / 2, $y + $index * $lineHeight, $maxWidth)
+                : $this->center($canvas, $line, $font, $minimumSize, $center, $y + $index * $lineHeight, $maxWidth);
         }
     }
 
