@@ -5,6 +5,15 @@
 @section('content')
 @php
     $user = auth()->user();
+    $approvalUrl = $user->isKepalaTU()
+        ? route('surat-keluar.pemeriksaan-kepala-tu')
+        : ($user->isKepalaSekolah() ? route('disposisi.antrian', ['tab' => 'persetujuan']).'#persetujuan' : null);
+    $cardUrls = [
+        'inbox' => $user->isTU() ? route('surat-masuk.index') : ($user->isKepalaTU() ? null : route('disposisi.antrian').'#surat-masuk'),
+        'outbox' => $user->isTU() ? route('surat-keluar.index') : $approvalUrl,
+        'document' => $user->isTU() ? route('surat-dinas.index') : $approvalUrl,
+        'clipboard' => $user->isKepalaTU() ? null : route('disposisi.antrian'),
+    ];
     $dashboardDescription = match (true) {
         $user->isTU() => 'Catat surat masuk, ajukan surat keluar dan surat dinas, lalu pantau disposisi, kerja sama industri, serta kegiatan PKL.',
         $user->isKepalaTU() => 'Periksa Surat Keluar, SK, dan SPT yang diajukan TU sebelum diteruskan kepada Kepala Sekolah.',
@@ -34,9 +43,15 @@
             ['document', 'Surat dinas', $stats['total_surat_dinas'], $user->isKepalaTU() ? 'Menunggu pemeriksaan Anda' : (($user->isTU() || $user->isKepalaSekolah()) ? $stats['surat_dinas_menunggu'].' menunggu persetujuan' : 'Tidak tersedia untuk role ini'), 'bg-violet-50 text-violet-700'],
             ['clipboard', 'Disposisi', $stats['total_disposisi'], $stats['disposisi_menunggu'].' tugas masih menunggu', 'bg-amber-50 text-amber-700'],
         ] as [$icon, $label, $total, $description, $tone])
-            <section class="page-panel p-5">
+            <section @class(['page-panel p-5', 'dashboard-card' => $cardUrls[$icon]])>
                 <div class="flex items-center justify-between gap-3">
-                    <h2 class="text-sm font-semibold text-slate-600">{{ $label }}</h2>
+                    <h2 class="text-sm font-semibold text-slate-600">
+                        @if($cardUrls[$icon])
+                            <a href="{{ $cardUrls[$icon] }}" class="dashboard-card-link">{{ $label }}</a>
+                        @else
+                            {{ $label }}
+                        @endif
+                    </h2>
                     <span class="w-10 h-10 rounded-xl flex items-center justify-center {{ $tone }}"><x-ui.icon :name="$icon" size="md" /></span>
                 </div>
                 <p class="mt-3 text-3xl font-semibold text-slate-900">{{ $total }}</p>
@@ -46,16 +61,16 @@
     </div>
 
     @if($user->isKepalaTU())
-        <section class="page-panel p-5 page-toolbar">
+        <section class="page-panel p-5 page-toolbar dashboard-card">
             <div><h2 class="font-semibold text-slate-900">Pemeriksaan surat</h2><p class="mt-1 text-sm text-slate-500">{{ $stats['total_surat_keluar'] + $stats['total_surat_dinas'] }} surat keluar, SK, dan SPT menunggu pemeriksaan.</p></div>
-            <a href="{{ route('surat-keluar.pemeriksaan-kepala-tu') }}" class="page-button page-button-primary ui-action"><x-ui.icon name="check-circle" /> Buka antrean pemeriksaan</a>
+            <a href="{{ route('surat-keluar.pemeriksaan-kepala-tu') }}" class="page-button page-button-primary ui-action dashboard-card-link"><x-ui.icon name="check-circle" /> Buka antrean pemeriksaan</a>
         </section>
     @endif
 
     @if($user->isTU() || $user->isHumas())
         <div class="grid gap-4 sm:grid-cols-2">
-            <section class="page-panel p-5"><h2 class="text-sm text-slate-500">Mitra industri</h2><p class="mt-3 text-3xl font-semibold text-slate-900">{{ $stats['total_kerja_sama'] }}</p><p class="mt-2 text-xs text-slate-500">{{ $stats['kerja_sama_aktif'] }} kerja sama aktif</p></section>
-            <section class="page-panel p-5"><h2 class="text-sm text-slate-500">Sertifikat dan PKL</h2><p class="mt-3 text-3xl font-semibold text-slate-900">{{ $stats['total_sertifikat'] }}</p><p class="mt-2 text-xs text-slate-500">Sertifikat tersimpan di sistem</p></section>
+            <section class="page-panel p-5 dashboard-card"><h2 class="text-sm text-slate-500"><a href="{{ route('kerja-sama.index') }}" class="dashboard-card-link">Mitra industri</a></h2><p class="mt-3 text-3xl font-semibold text-slate-900">{{ $stats['total_kerja_sama'] }}</p><p class="mt-2 text-xs text-slate-500">{{ $stats['kerja_sama_aktif'] }} kerja sama aktif</p></section>
+            <section class="page-panel p-5 dashboard-card"><h2 class="text-sm text-slate-500"><a href="{{ route('data-siswa.index') }}" class="dashboard-card-link">Sertifikat dan PKL</a></h2><p class="mt-3 text-3xl font-semibold text-slate-900">{{ $stats['total_sertifikat'] }}</p><p class="mt-2 text-xs text-slate-500">Sertifikat tersimpan di sistem</p></section>
         </div>
     @endif
 
@@ -63,8 +78,8 @@
         <section class="page-panel">
             <div class="page-panel-heading"><div><h2 class="page-title">Persetujuan dan disposisi</h2><p class="page-description">Pilih pekerjaan yang ingin ditinjau.</p></div></div>
             <div class="page-section grid gap-5 sm:grid-cols-2">
-                <div><h3 class="font-semibold text-slate-900">Persetujuan surat dari TU</h3><p class="mt-2 text-slate-500">Periksa surat undangan, mutasi siswa, Surat Keputusan, dan Surat Perintah Tugas sebelum diterbitkan.</p><a href="{{ route('disposisi.antrian', ['tab' => 'persetujuan']) }}#persetujuan" class="page-button mt-4 ui-action"><x-ui.icon name="clipboard" /> Buka daftar persetujuan</a></div>
-                <div><h3 class="font-semibold text-slate-900">Disposisi surat masuk</h3><p class="mt-2 text-slate-500">Pilih penerima, tuliskan instruksi, lalu pantau perkembangan tugas yang telah diteruskan.</p><a href="{{ route('disposisi.antrian') }}#surat-masuk" class="page-button mt-4 ui-action"><x-ui.icon name="clipboard" /> Kelola disposisi</a></div>
+                <div class="dashboard-card rounded-xl p-4"><h3 class="font-semibold text-slate-900">Persetujuan surat dari TU</h3><p class="mt-2 text-slate-500">Periksa surat undangan, mutasi siswa, Surat Keputusan, dan Surat Perintah Tugas sebelum diterbitkan.</p><a href="{{ route('disposisi.antrian', ['tab' => 'persetujuan']) }}#persetujuan" class="page-button mt-4 ui-action dashboard-card-link"><x-ui.icon name="clipboard" /> Buka daftar persetujuan</a></div>
+                <div class="dashboard-card rounded-xl p-4"><h3 class="font-semibold text-slate-900">Disposisi surat masuk</h3><p class="mt-2 text-slate-500">Pilih penerima, tuliskan instruksi, lalu pantau perkembangan tugas yang telah diteruskan.</p><a href="{{ route('disposisi.antrian') }}#surat-masuk" class="page-button mt-4 ui-action dashboard-card-link"><x-ui.icon name="clipboard" /> Kelola disposisi</a></div>
             </div>
         </section>
     @endif

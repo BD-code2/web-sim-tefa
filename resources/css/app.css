@@ -271,3 +271,16 @@
     .sim-page .ui-action-icon { min-width: 44px; }
 }
 [x-cloak] { display: none !important; }
+
+/* Seluruh permukaan kartu menjadi tautan, termasuk saat memakai keyboard. */
+.dashboard-card { position: relative; transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background-color .18s ease; }
+.dashboard-card-link::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
+.dashboard-card:focus-within { outline: 2px solid #2563eb; outline-offset: 3px; background-color: #eff6ff; }
+@media (hover: hover) {
+    .dashboard-card:hover { transform: translateY(-3px); border-color: #93c5fd; background-color: #eff6ff; box-shadow: 0 8px 20px rgb(15 23 42 / .08); }
+}
+.dashboard-card:active { background-color: #dbeafe; }
+@media (prefers-reduced-motion: reduce) {
+    .dashboard-card { transition: none; }
+    .dashboard-card:hover { transform: none; }
+}
