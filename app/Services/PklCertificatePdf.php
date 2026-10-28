@@ -51,9 +51,9 @@ class PklCertificatePdf
         $sy = $canvas->get_height() / self::REFERENCE_HEIGHT;
         $center = self::REFERENCE_WIDTH / 2 * $sx;
         $principalLeft = 54.5 * $sx;
-        $industryLeft = 420.5 * $sx;
+        $industryLeft = 480.5 * $sx;
         // Jaga margin kanan sejajar dengan margin kiri blok Kepala Sekolah.
-        $industryWidth = 227 * $sx;
+        $industryWidth = 167 * $sx;
         $sans = $fonts->getFont('DejaVu Sans');
         $bold = $fonts->getFont('DejaVu Sans', 'bold');
         $serifBold = $fonts->getFont('Times', 'bold');
