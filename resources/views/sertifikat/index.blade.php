@@ -40,7 +40,7 @@
     <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
         <p class="px-4 py-3 text-xs text-slate-500">Geser tabel ke samping untuk melihat detail dan aksi siswa.</p>
         <div class="overflow-x-auto directory-scroll" tabindex="0" role="region" aria-label="Daftar sertifikat siswa">
-            <table class="page-table-actions directory-table student-list-table w-full text-left text-xs">
+            <table class="page-table-actions directory-table student-list-table min-w-[1120px] whitespace-nowrap w-full text-left text-xs">
                 <thead class="bg-slate-50/80 border-b border-slate-200 text-slate-500 uppercase tracking-wider font-semibold">
                     <tr>
                         <th scope="col" class="py-3.5 px-4">No. Sertifikat</th>
