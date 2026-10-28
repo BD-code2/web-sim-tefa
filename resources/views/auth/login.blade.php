@@ -61,8 +61,8 @@
                                        class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 pr-12 text-sm outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
                                        placeholder="Masukkan kata sandi">
                                 <button type="button" id="toggle-password" class="absolute inset-y-0 right-0 flex items-center px-4 text-slate-400 transition hover:text-blue-700" aria-label="Tampilkan kata sandi" aria-pressed="false">
-                                    <svg id="icon-eye" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12s3.5-6.25 9.75-6.25S21.75 12 21.75 12 18.25 18.25 12 18.25 2.25 12 2.25 12Z"/><circle cx="12" cy="12" r="2.75"/></svg>
-                                    <svg id="icon-eye-off" xmlns="http://www.w3.org/2000/svg" class="hidden h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m3 3 18 18M10.58 10.59a2 2 0 0 0 2.83 2.83M9.88 5.1A10.8 10.8 0 0 1 12 4.9c6.25 0 9.75 7.1 9.75 7.1a16.8 16.8 0 0 1-3.1 3.85M6.23 6.23C3.7 7.9 2.25 12 2.25 12s3.5 7.1 9.75 7.1c1.2 0 2.28-.25 3.25-.66"/></svg>
+                                    <svg id="icon-eye" xmlns="http://www.w3.org/2000/svg" class="hidden h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12s3.5-6.25 9.75-6.25S21.75 12 21.75 12 18.25 18.25 12 18.25 2.25 12 2.25 12Z"/><circle cx="12" cy="12" r="2.75"/></svg>
+                                    <svg id="icon-eye-off" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m3 3 18 18M10.58 10.59a2 2 0 0 0 2.83 2.83M9.88 5.1A10.8 10.8 0 0 1 12 4.9c6.25 0 9.75 7.1 9.75 7.1a16.8 16.8 0 0 1-3.1 3.85M6.23 6.23C3.7 7.9 2.25 12 2.25 12s3.5 7.1 9.75 7.1c1.2 0 2.28-.25 3.25-.66"/></svg>
                                 </button>
                             </div>
                         </div>
@@ -101,8 +101,8 @@
             passwordInput.type = isVisible ? 'password' : 'text';
             togglePassword.setAttribute('aria-pressed', String(!isVisible));
             togglePassword.setAttribute('aria-label', isVisible ? 'Tampilkan kata sandi' : 'Sembunyikan kata sandi');
-            eyeIcon.classList.toggle('hidden', !isVisible);
-            eyeOffIcon.classList.toggle('hidden', isVisible);
+            eyeIcon.classList.toggle('hidden', isVisible);
+            eyeOffIcon.classList.toggle('hidden', !isVisible);
         });
     </script>
 </body>
