@@ -31,15 +31,15 @@
                             
                             <td class="py-3.5 px-4 font-mono">{{ $u->email }}</td>
                             <td class="py-3.5 px-4">
-                                <span class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-blue-100 text-blue-800">
+                                <span class="inline-flex items-center whitespace-nowrap px-2.5 py-1 rounded-full text-[11px] font-semibold bg-blue-100 text-blue-800">
                                     {{ $u->role_label }}
                                 </span>
                             </td>
                             <td class="py-3.5 px-4 text-center">
                                 @if($u->is_active)
-                                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700">Aktif</span>
+                                    <span class="inline-flex items-center whitespace-nowrap px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700">Aktif</span>
                                 @else
-                                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700">Nonaktif</span>
+                                    <span class="inline-flex items-center whitespace-nowrap px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700">Nonaktif</span>
                                 @endif
                             </td>
                             <td class="py-3.5 px-4 text-center">
