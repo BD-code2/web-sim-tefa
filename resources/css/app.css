@@ -33,9 +33,16 @@
         margin-top: .375rem;
     }
     .sim-sidebar-category {
-        @apply flex items-center justify-between gap-2 text-xs font-semibold uppercase tracking-wider text-blue-200;
+        @apply text-xs font-semibold uppercase tracking-wider text-blue-200;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        gap: .5rem;
         margin: 0 1rem;
         width: calc(100% - 2rem);
+        /* Sejajar dengan teks menu: ikon 20px dan jarak 12px. */
+        padding-left: 2rem;
         text-align: left;
         min-height: 2.75rem;
         border-bottom: 1px solid rgb(191 219 254 / .3);
@@ -49,17 +56,18 @@
         outline-offset: 2px;
     }
     .sim-sidebar-chevron {
+        display: block;
         flex-shrink: 0;
-        transition: transform 250ms cubic-bezier(.22, 1, .36, 1);
+        transform-origin: center;
+        transition: transform 300ms cubic-bezier(.4, 0, .2, 1);
     }
     .sim-sidebar-chevron-badge {
         display: inline-flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
-        width: 1.75rem;
-        height: 1.75rem;
-        margin-left: auto;
+        width: 1.5rem;
+        height: 1.5rem;
         border-radius: .5rem;
         background: rgb(255 255 255 / .08);
         transition: background-color 200ms ease;
