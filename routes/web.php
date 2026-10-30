@@ -114,6 +114,7 @@ Route::middleware(['auth', 'role:tu'])->prefix('surat-dinas')->name('surat-dinas
     Route::post('/', [SuratDinasController::class, 'store'])->name('store');
     Route::get('/{suratDinas}/edit', [SuratDinasController::class, 'edit'])->name('edit');
     Route::put('/{suratDinas}', [SuratDinasController::class, 'update'])->name('update');
+    Route::delete('/{suratDinas}', [SuratDinasController::class, 'destroy'])->name('destroy');
     Route::get('/{suratDinas}', [SuratDinasController::class, 'show'])->name('show');
     Route::get('/{id}/pdf', [SuratDinasController::class, 'cetakPdf'])->name('pdf');
 });

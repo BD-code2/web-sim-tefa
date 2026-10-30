@@ -11,7 +11,7 @@
         </div>
         <div class="grid w-full grid-cols-1 items-stretch gap-2 sm:w-auto sm:grid-cols-2">
             <a href="{{ route('surat-dinas.create-sk') }}" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-blue-700 px-3 py-2.5 text-center text-sm font-semibold leading-tight text-white transition hover:bg-blue-800 ui-action"><x-ui.icon name="plus" /> <span>Buat Surat Keputusan</span></a>
-            <a href="{{ route('surat-dinas.create-spt') }}" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-center text-sm font-semibold leading-tight text-slate-700 transition hover:bg-slate-50 ui-action"><x-ui.icon name="plus" /> <span>Buat Surat Perintah Tugas</span></a>
+            <a href="{{ route('surat-dinas.create-spt') }}" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-blue-700 px-3 py-2.5 text-center text-sm font-semibold leading-tight text-white transition hover:bg-blue-800 ui-action"><x-ui.icon name="plus" /> <span>Buat Surat Perintah Tugas</span></a>
         </div>
     </div>
 
@@ -94,6 +94,10 @@
                             </td>
                             <td class="py-3.5 px-4 text-center">
                                 <div class="flex items-center justify-center gap-1.5">
+                                    <form action="{{ route('surat-dinas.destroy', $item) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus surat dinas ini?')" class="inline">
+                                        @csrf @method('DELETE')
+                                        <x-ui.action icon="trash" label="Hapus surat {{ $item->no_surat ?? $item->tentang_judul }}" tone="danger" type="submit" />
+                                    </form>
                                     @if($item->status === 'disetujui')
                                         <x-ui.action icon="printer" label="Cetak PDF" href="{{ route('surat-dinas.pdf', $item) }}" target="_blank" />
                                     @else

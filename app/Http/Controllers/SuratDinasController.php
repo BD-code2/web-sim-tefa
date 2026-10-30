@@ -36,6 +36,13 @@ class SuratDinasController extends Controller
         return view('surat-dinas.index', compact('suratDinas'));
     }
 
+    public function destroy(SuratDinas $suratDinas)
+    {
+        $suratDinas->delete();
+
+        return redirect()->route('surat-dinas.index')->with('success', 'Surat dinas berhasil dihapus.');
+    }
+
     public function createSk()
     {
         return view('surat-dinas.create-sk');

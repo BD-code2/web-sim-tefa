@@ -47,6 +47,36 @@ class SuratDinasTest extends TestCase
             ->assertSee('Surat Dinas');
     }
 
+    public function test_tu_dapat_menghapus_satu_surat_dinas(): void
+    {
+        $surat = $this->buatSuratDinas(['status' => 'disetujui']);
+        $lain = $this->buatSuratDinas(['jenis_surat' => 'SPT']);
+
+        $this->actingAs($this->userTu())
+            ->get(route('surat-dinas.index'))
+            ->assertSee(route('surat-dinas.destroy', $surat), false);
+
+        $this->delete(route('surat-dinas.destroy', $surat))
+            ->assertRedirect(route('surat-dinas.index'))
+            ->assertSessionHas('success');
+
+        $this->assertModelMissing($surat);
+        $this->assertModelExists($lain);
+    }
+
+    public function test_role_selain_tu_tidak_dapat_menghapus_surat_dinas(): void
+    {
+        $surat = $this->buatSuratDinas();
+
+        foreach (array_diff(array_keys(User::AVAILABLE_ROLES), ['tu']) as $role) {
+            $this->actingAs(User::factory()->create(['role' => $role]))
+                ->delete(route('surat-dinas.destroy', $surat))
+                ->assertForbidden();
+        }
+
+        $this->assertModelExists($surat);
+    }
+
     public function test_index_ditolak_untuk_role_lain(): void
     {
         foreach (['kepala_sekolah', 'bendahara_spp', 'humas', 'kepala_tu'] as $role) {
