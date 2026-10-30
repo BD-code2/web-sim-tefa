@@ -32,6 +32,36 @@
     .sim-sidebar-nav > * + * {
         margin-top: .375rem;
     }
+    .sim-sidebar-category {
+        @apply flex items-center justify-between gap-2 text-xs font-semibold uppercase tracking-wider text-blue-200;
+        margin: 0 1rem;
+        min-height: 2.75rem;
+        border-bottom: 1px solid rgb(191 219 254 / .3);
+        cursor: pointer;
+        list-style: none;
+    }
+    .sim-sidebar-category::-webkit-details-marker {
+        display: none;
+    }
+    .sim-sidebar-category:hover {
+        color: white;
+    }
+    .sim-sidebar-category:focus-visible {
+        outline: 2px solid white;
+        outline-offset: 2px;
+    }
+    .sim-sidebar-chevron {
+        flex-shrink: 0;
+    }
+    .sim-sidebar-group[open] > summary .sim-sidebar-chevron {
+        transform: rotate(90deg);
+    }
+    .sim-sidebar-group-items {
+        padding-top: .5rem;
+    }
+    .sim-sidebar-group-items > * + * {
+        margin-top: .375rem;
+    }
     .sim-sidebar-item {
         @apply flex w-full shrink-0 items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium transition-colors;
         min-height: 3rem;

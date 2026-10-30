@@ -41,6 +41,7 @@
 
             <!-- Daftar menu dapat digulir tanpa menggeser logo dan logout. -->
             <nav class="sim-sidebar-nav" aria-label="Menu utama">
+                <x-ui.sidebar-group label="Utama">
                 <!-- Dashboard - ALL ROLES -->
                 <a href="{{ route('dashboard') }}" class="sim-sidebar-item {{ request()->routeIs('dashboard') ? 'bg-white/20 text-white font-semibold shadow-sm' : 'text-blue-100 hover:bg-white/10 hover:text-white' }}">
                     <x-ui.icon name="dashboard" size="md" />
@@ -48,15 +49,14 @@
                 </a>
 
                 <!-- Surat Masuk dikelola TU -->
+                </x-ui.sidebar-group>
+                @if(auth()->user()->hasRole(['tu', 'kepala_tu']))
+                <x-ui.sidebar-group label="Persuratan">
                 @if(auth()->user()->isTU())
                 <a href="{{ route('surat-masuk.index') }}" class="sim-sidebar-item {{ request()->routeIs('surat-masuk.*') ? 'bg-white/20 text-white font-semibold' : 'text-blue-100 hover:bg-white/10 hover:text-white' }}">
                     <x-ui.icon name="inbox" size="md" />
                     Surat Masuk
                 </a>
-                @endif
-
-                @if(auth()->user()->isTU())
-                <!-- Akses surat keluar tersedia di menu tunggal di bawah. -->
                 @endif
 
                 @if(auth()->user()->isKepalaTU())
@@ -90,7 +90,10 @@
                 @endif
 
                 <!-- Pemantauan Disposisi untuk TU, Kepala Sekolah, dan penerima disposisi -->
+                </x-ui.sidebar-group>
+                @endif
                 @if(auth()->user()->hasRole(['kepala_sekolah', 'tu', 'humas', 'waka_kurikulum', 'waka_kesiswaan', 'waka_sarpras', 'waka_humas', 'pembina_osis', 'bendahara_bos', 'bendahara_spp']))
+                <x-ui.sidebar-group label="Disposisi">
                 <a href="{{ route('disposisi.antrian') }}" class="sim-sidebar-item {{ request()->routeIs('disposisi.antrian') ? 'bg-white/20 text-white font-semibold' : 'text-blue-100 hover:bg-white/10 hover:text-white' }}">
                     <x-ui.icon name="clipboard" size="md" />
                     Pemantauan Disposisi
@@ -99,33 +102,32 @@
                     <x-ui.icon name="archive" size="md" />
                     Arsip Disposisi
                 </a>
+                </x-ui.sidebar-group>
                 @endif
 
                 <!-- Kerja Sama Industri dikelola TU dan Humas -->
                 @if(auth()->user()->hasRole(['tu', 'humas', 'waka_humas']))
+                <x-ui.sidebar-group label="Kemitraan dan PKL">
                 <a href="{{ route('kerja-sama.index') }}" class="sim-sidebar-item {{ request()->routeIs('kerja-sama.*') ? 'bg-white/20 text-white font-semibold' : 'text-blue-100 hover:bg-white/10 hover:text-white' }}">
                     <x-ui.icon name="building" size="md" />
                     Kerja Sama Industri
                 </a>
-                @endif
-
                 <!-- Sertifikat dan PKL -->
-                @if(auth()->user()->hasRole(['tu', 'humas', 'waka_humas']))
                 <a href="{{ route('data-siswa.index') }}" class="sim-sidebar-item {{ request()->routeIs('data-siswa.*') ? 'bg-white/20 text-white font-semibold' : 'text-blue-100 hover:bg-white/10 hover:text-white' }}">
                     <x-ui.icon name="certificate" size="md" />
                     Sertifikat dan PKL
                 </a>
+                </x-ui.sidebar-group>
                 @endif
 
                 <!-- Pengaturan akun dan hak akses dikelola TU -->
                 @if(auth()->user()->isTU())
-                <div class="pt-4 pb-1">
-                    <p class="px-4 text-xs font-semibold text-blue-300 uppercase tracking-wider">Administrasi</p>
-                </div>
+                <x-ui.sidebar-group label="Administrasi">
                 <a href="{{ route('pengaturan.users.index') }}" class="sim-sidebar-item {{ request()->routeIs('pengaturan.*') ? 'bg-white/20 text-white font-semibold' : 'text-blue-100 hover:bg-white/10 hover:text-white' }}">
                     <x-ui.icon name="users" size="md" />
                     Kelola Pengguna
                 </a>
+                </x-ui.sidebar-group>
                 @endif
             </nav>
 
