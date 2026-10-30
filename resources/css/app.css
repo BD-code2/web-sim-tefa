@@ -35,13 +35,11 @@
     .sim-sidebar-category {
         @apply flex items-center justify-between gap-2 text-xs font-semibold uppercase tracking-wider text-blue-200;
         margin: 0 1rem;
+        width: calc(100% - 2rem);
+        text-align: left;
         min-height: 2.75rem;
         border-bottom: 1px solid rgb(191 219 254 / .3);
         cursor: pointer;
-        list-style: none;
-    }
-    .sim-sidebar-category::-webkit-details-marker {
-        display: none;
     }
     .sim-sidebar-category:hover {
         color: white;
@@ -52,9 +50,32 @@
     }
     .sim-sidebar-chevron {
         flex-shrink: 0;
+        transition: transform 250ms cubic-bezier(.22, 1, .36, 1);
     }
-    .sim-sidebar-group[open] > summary .sim-sidebar-chevron {
+    .sim-sidebar-chevron-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        width: 1.75rem;
+        height: 1.75rem;
+        margin-left: auto;
+        border-radius: .5rem;
+        background: rgb(255 255 255 / .08);
+        transition: background-color 200ms ease;
+    }
+    .sim-sidebar-category:hover .sim-sidebar-chevron-badge {
+        background: rgb(255 255 255 / .16);
+    }
+    .sim-sidebar-chevron.is-expanded {
         transform: rotate(90deg);
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .sim-sidebar-chevron,
+        .sim-sidebar-chevron-badge,
+        .sim-sidebar-group-items {
+            transition: none !important;
+        }
     }
     .sim-sidebar-group-items {
         padding-top: .5rem;
