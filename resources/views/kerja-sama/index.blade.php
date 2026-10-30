@@ -22,8 +22,8 @@
                 <h3 class="text-3xl font-extrabold text-slate-800 mt-1">{{ $stats['total'] }}</h3>
                 <span class="text-xs text-slate-400 font-medium mt-0.5 inline-block">Semua mitra</span>
             </div>
-            <div class="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center shadow-md shadow-blue-600/30">
-                <x-ui.icon name="building" size="lg" />
+            <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center">
+                <x-ui.icon name="building" size="md" />
             </div>
         </div>
 
@@ -34,8 +34,8 @@
                 <h3 class="text-3xl font-extrabold text-slate-800 mt-1">{{ $stats['aktif'] }}</h3>
                 <span class="text-xs text-emerald-600 font-medium mt-0.5 inline-block">Lihat aktif</span>
             </div>
-            <div class="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shadow-md shadow-emerald-500/30">
-                <x-ui.icon name="check-circle" size="lg" />
+            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                <x-ui.icon name="check-circle" size="md" />
             </div>
         </div>
 
@@ -46,8 +46,8 @@
                 <h3 class="text-3xl font-extrabold text-slate-800 mt-1">{{ $stats['akan_berakhir'] }}</h3>
                 <span class="text-xs text-amber-600 font-medium mt-0.5 inline-block">Perlu perhatian</span>
             </div>
-            <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center shadow-md shadow-amber-500/30">
-                <x-ui.icon name="warning" size="lg" />
+            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center">
+                <x-ui.icon name="warning" size="md" />
             </div>
         </div>
 
@@ -58,8 +58,8 @@
                 <h3 class="text-3xl font-extrabold text-slate-800 mt-1">{{ $stats['berakhir'] }}</h3>
                 <span class="text-xs text-slate-400 font-medium mt-0.5 inline-block">Arsip</span>
             </div>
-            <div class="w-12 h-12 rounded-2xl bg-purple-600 text-white flex items-center justify-center shadow-md shadow-purple-600/30">
-                <x-ui.icon name="archive" size="lg" />
+            <div class="w-10 h-10 rounded-xl bg-violet-50 text-violet-700 flex items-center justify-center">
+                <x-ui.icon name="archive" size="md" />
             </div>
         </div>
     </div>
