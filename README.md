@@ -16,9 +16,17 @@ Dokumentasi ini mengikuti implementasi rute, controller, model, dan seeder dalam
 
 ![Preview halaman login](public/images/Login.png)
 
-### Dashboard TU
+### Dashboard role TU
 
-![Preview dashboard TU](public/images/Dashboard%20TU.png)
+![Preview dashboard TU](public/images/Dashboard%20TU2.png)
+
+### Dashboard role Kepala Sekolah
+
+![Preview dashboard Kepala Sekolah](public/images/Dashboard%20Kepsek.png)
+
+### Dashboard role Waka Humas
+
+![Preview dashboard Kepala Sekolah](public/images/Dashboard%20Waka%20Humas.png)
 
 ## Daftar isi
 
