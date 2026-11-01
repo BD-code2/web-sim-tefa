@@ -5,6 +5,7 @@
 @section('content')
 @php
     $user = auth()->user();
+    $aksesSuratKeluarDinas = $user->isTU() || $user->isKepalaTU() || $user->isKepalaSekolah();
     $approvalUrl = $user->isKepalaTU()
         ? route('surat-keluar.pemeriksaan-kepala-tu')
         : ($user->isKepalaSekolah() ? route('disposisi.antrian', ['tab' => 'persetujuan']).'#persetujuan' : null);
@@ -36,13 +37,14 @@
         </div>
     </section>
 
-    <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <div @class(['grid gap-4 sm:grid-cols-2', 'xl:grid-cols-4' => $aksesSuratKeluarDinas])>
         @foreach([
             ['inbox', 'Surat masuk', $stats['total_surat_masuk'], $stats['surat_masuk_baru'].' surat berstatus diterima', 'bg-blue-50 text-blue-700'],
             ['outbox', 'Surat keluar', $stats['total_surat_keluar'], $user->isKepalaTU() ? 'Menunggu pemeriksaan Anda' : (($user->isTU() || $user->isKepalaSekolah()) ? $stats['surat_keluar_menunggu'].' menunggu persetujuan' : 'Tidak tersedia untuk role ini'), 'bg-emerald-50 text-emerald-700'],
             ['document', 'Surat dinas', $stats['total_surat_dinas'], $user->isKepalaTU() ? 'Menunggu pemeriksaan Anda' : (($user->isTU() || $user->isKepalaSekolah()) ? $stats['surat_dinas_menunggu'].' menunggu persetujuan' : 'Tidak tersedia untuk role ini'), 'bg-violet-50 text-violet-700'],
             ['clipboard', 'Disposisi', $stats['total_disposisi'], $stats['disposisi_menunggu'].' tugas masih menunggu', 'bg-amber-50 text-amber-700'],
         ] as [$icon, $label, $total, $description, $tone])
+            @continue(in_array($icon, ['outbox', 'document']) && ! $aksesSuratKeluarDinas)
             <section @class(['page-panel p-5', 'dashboard-card' => $cardUrls[$icon]])>
                 <div class="flex items-center justify-between gap-3">
                     <h2 class="text-sm font-semibold text-slate-600">

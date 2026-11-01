@@ -14,12 +14,12 @@ class DashboardCardTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_card_persuratan_tampil_di_semua_role_dengan_data_sesuai_akses(): void
+    public function test_card_persuratan_tampil_sesuai_akses_role(): void
     {
         $tu = User::factory()->create(['role' => 'tu']);
         $kepsek = User::factory()->create(['role' => 'kepala_sekolah']);
         $penerima = User::factory()->create(['role' => 'waka_kurikulum']);
-        $wakaSarpras = User::factory()->create(['role' => 'waka_sarpras']);
+        $kepalaTu = User::factory()->create(['role' => 'kepala_tu']);
 
         $suratMasuk = SuratMasuk::create([
             'no_surat' => 'SM/DASHBOARD/001',
@@ -46,7 +46,7 @@ class DashboardCardTest extends TestCase
             'instruksi' => 'Tindak lanjuti.',
         ]);
 
-        foreach ([$tu, $kepsek, $penerima, $wakaSarpras] as $user) {
+        foreach ([$tu, $kepsek, $kepalaTu] as $user) {
             $this->actingAs($user)->get(route('dashboard'))
                 ->assertOk()
                 ->assertSee('Surat masuk')
@@ -55,9 +55,19 @@ class DashboardCardTest extends TestCase
                 ->assertSee('Disposisi');
         }
 
+        foreach (['humas', 'waka_humas', 'waka_kurikulum', 'waka_kesiswaan', 'waka_sarpras', 'pembina_osis', 'bendahara_bos', 'bendahara_spp'] as $role) {
+            $user = User::factory()->create(['role' => $role]);
+            $this->actingAs($user)->get(route('dashboard'))
+                ->assertOk()
+                ->assertSee('Surat masuk')
+                ->assertSee('Disposisi')
+                ->assertDontSee('Surat keluar')
+                ->assertDontSee('Surat dinas')
+                ->assertDontSee('Tidak tersedia untuk role ini');
+        }
+
         $this->actingAs($penerima)->get(route('dashboard'))
-            ->assertSee('1 tugas masih menunggu')
-            ->assertSee('Tidak tersedia untuk role ini');
+            ->assertSee('1 tugas masih menunggu');
 
     }
 }
